@@ -116,7 +116,7 @@ const Page = () => {
           }}
           className="absolute left-20 top-0 mt-12 h-6 w-6 rounded-full bg-gray-900"
         ></motion.div>
-        <div className="font-noto-sans-thai relative z-[12] mb-56 flex flex-col pt-[200px] text-white">
+        <div className="font-noto-sans-thai relative z-[12] mb-48 flex flex-col pt-[200px] text-white sm:mb-56">
           <div className="mx-auto flex w-full flex-col items-center justify-center px-6">
             <div className="rounded-2xl px-10 py-4">
               <h1 className="text-center text-2xl font-semibold text-white">
@@ -255,8 +255,8 @@ const Page = () => {
             </div>
           </div>
         </div>
-        <div className="font-noto-sans-thai relative z-[10] flex min-h-[787px] w-full items-center justify-center bg-white py-32 text-gray-900">
-          <div className="absolute top-0 left-0 h-[200px] w-[120vw] sm:h-[400px] sm:w-full">
+        <div className="font-noto-sans-thai relative z-[10] flex min-h-[500px] w-full items-center justify-center bg-white text-gray-900 sm:min-h-[787px] sm:py-32">
+          <div className="absolute top-0 left-0 h-[200px] w-[140vw] sm:h-[400px] sm:w-[130vw] md:w-[120vw]">
             <motion.div
               animate={{
                 height:
@@ -270,7 +270,7 @@ const Page = () => {
               className="absolute top-0 left-0 h-full w-full rounded-b-full bg-gray-900"
             />
           </div>
-          <div className="relative mx-auto flex w-full max-w-lg flex-col switch:hidden">
+          <div className="relative mx-auto flex w-full max-w-lg flex-col px-4 sm:px-0 switch:hidden">
             <motion.div className="relative z-[12] mx-auto flex w-full max-w-lg flex-col items-center rounded-xl bg-[#434894] py-8 text-white shadow-md">
               <div className="absolute top-0 left-0 flex h-full w-full p-1">
                 <div className="w-full shrink rounded-lg border border-white" />
@@ -326,7 +326,7 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="font-noto-sans-thai relative z-[9] flex min-h-[800px] bg-white">
+        <div className="font-noto-sans-thai relative z-[9] flex min-h-screen bg-white sm:min-h-[800px]">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: sy >= docHeight - 60 ? 1 : 0 }}
