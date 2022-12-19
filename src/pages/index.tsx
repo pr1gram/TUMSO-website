@@ -1,5 +1,351 @@
+import { ClockIcon } from "@heroicons/react/24/outline"
+import { CalendarIcon, ChevronUpIcon } from "@heroicons/react/24/solid"
+import classnames from "classnames"
+import type { Transition } from "framer-motion"
+import { motion, useScroll } from "framer-motion"
+import type { FC } from "react"
+import { useEffect, useState } from "react"
+
+import { useWindowDimensions } from "@/utils/dimension"
+
+const RevealText: FC<{
+  children: any
+  className?: string
+  transition?: Transition
+}> = ({ children, className = "", transition }) => {
+  return (
+    <div className="relative">
+      <motion.h1
+        initial={{ width: "0%" }}
+        animate={{ width: "100%" }}
+        transition={transition}
+        className={classnames(
+          "wrap-all absolute top-0 left-0 w-full overflow-hidden text-clip whitespace-nowrap",
+          className
+        )}
+      >
+        {children}
+      </motion.h1>
+      <h1 className={classnames("mx-1 opacity-0", className)}>{children}</h1>
+    </div>
+  )
+}
 const Page = () => {
-  return <div></div>
+  const { scrollY } = useScroll()
+  const [sy, setSY] = useState(0)
+
+  const { height } = useWindowDimensions()
+  const [docHeight, setDocHeight] = useState(0)
+
+  useEffect(() => {
+    scrollY.onChange((d) => {
+      console.log(d)
+      setSY(d)
+    })
+  }, [])
+
+  useEffect(() => {
+    setDocHeight(document.body.offsetHeight - height)
+  }, [height])
+
+  const offset = 0
+  const r = height - 787
+
+  return (
+    <div className="max-w-screen font-plus-jakarta-sans w-full overflow-x-hidden">
+      <div className="relative z-[10] flex min-h-screen w-full flex-col items-center justify-center bg-white py-12">
+        <RevealText
+          transition={{ type: "tween", duration: 0.6 }}
+          className="text-2xl font-semibold text-gray-900"
+        >
+          Welcome to TUMSO website
+        </RevealText>
+        <RevealText
+          transition={{ type: "tween", delay: 0.4, duration: 0.6 }}
+          className="pt-1 text-gray-600"
+        >
+          Registration starts 23th December 2022
+        </RevealText>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ type: "tween", delay: 1.0, duration: 0.3 }}
+          className="absolute bottom-10 flex animate-bounce flex-col items-center text-sm"
+        >
+          <ChevronUpIcon className="h-6 w-6" />
+          <h1 className="-mt-1">Slide up</h1>
+        </motion.div>
+      </div>
+      <div className="relative w-full">
+        <motion.div
+          animate={{
+            width:
+              // eslint-disable-next-line no-nested-ternary
+              sy > 1500 + offset
+                ? `${60 + (1500 - 200) * 6}px`
+                : // eslint-disable-next-line no-nested-ternary
+                sy < 200 + offset
+                ? "60px"
+                : sy > 650
+                ? `${60 + (sy - 200) * 6}px`
+                : `${60 + (sy - 200) * 3.5}px`,
+            height:
+              // eslint-disable-next-line no-nested-ternary
+              sy > 1500 + offset
+                ? `${60 + (1500 - 200) * 2}px`
+                : sy < 200 + offset
+                ? "60px"
+                : `${60 + (sy - 200) * 3.5}px`,
+            y:
+              // eslint-disable-next-line no-nested-ternary
+              sy > 1500 + offset
+                ? `-${60 + (1500 - 200) * 0.2}px`
+                : sy < 200 + offset
+                ? "60px"
+                : `-${60 + (sy - 200) * 0.2}px`,
+            x:
+              // eslint-disable-next-line no-nested-ternary
+              sy > 1500 + offset
+                ? `-${60 + (1500 - 200) * 0.4}px`
+                : // eslint-disable-next-line no-nested-ternary
+                sy < 200 + offset
+                ? "60px"
+                : sy > 650
+                ? `-${60 + (sy - 200) * 0.4}px`
+                : `-${60 + (sy - 200) * 0.2}px`
+          }}
+          className="absolute left-20 top-0 mt-12 h-6 w-6 rounded-full bg-gray-900"
+        ></motion.div>
+        <div className="font-noto-sans-thai relative z-[12] mb-56 flex flex-col pt-[200px] text-white">
+          <div className="mx-auto flex w-full flex-col items-center justify-center px-6">
+            <div className="rounded-2xl px-10 py-4">
+              <h1 className="text-center text-2xl font-semibold text-white">
+                TUMSO คืออะไร
+              </h1>
+              <p className="mt-2 max-w-lg break-all text-center text-gray-200">
+                TUMSO คืออะไรอชคืออะไรคืออะไ
+                คืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไรคืออะไรอชคืออะไร
+              </p>
+            </div>
+            <div className="mt-16 w-full max-w-2xl border-b border-white border-opacity-50" />
+            <div className="mt-20">
+              <h1 className="text-center text-2xl font-semibold">
+                สาขาที่เปิดรับสมัคร
+              </h1>
+              <div className="mt-6 flex max-w-[800px] flex-wrap items-center justify-center">
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                  <div className="px-4">
+                    <h1 className="text-lg font-semibold">Physics</h1>
+                    <p className="break-all text-sm text-gray-200">
+                      Description very long eknaff;a; ael kja very long
+                      eknaff;a; ael kja very lon
+                    </p>
+                  </div>
+                  <div className="mt-2 flex">
+                    <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
+                      <ClockIcon className="h-4 w-4" />
+                      <span className="mt-0.5">2 ชั่วโมง</span>
+                    </div>
+                    <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span className="mt-0.5">13rd Jan 09.00 - 13.00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="font-noto-sans-thai relative z-[10] flex min-h-[787px] w-full items-center justify-center bg-white py-32 text-gray-900">
+          <div className="absolute top-0 left-0 h-[200px] w-[120vw] sm:h-[400px] sm:w-full">
+            <motion.div
+              animate={{
+                height:
+                  // eslint-disable-next-line no-nested-ternary
+                  sy >= 1400 + offset
+                    ? (sy / (1949 + offset)) * 100 * 1.2 > 100
+                      ? "100%"
+                      : `${(sy / (1949 + offset)) * 100 * 1.2}%`
+                    : "25%"
+              }}
+              className="absolute top-0 left-0 h-full w-full rounded-b-full bg-gray-900"
+            />
+          </div>
+          <div className="relative mx-auto flex w-full max-w-lg flex-col switch:hidden">
+            <motion.div className="relative z-[12] mx-auto flex w-full max-w-lg flex-col items-center rounded-xl bg-[#434894] py-8 text-white shadow-md">
+              <div className="absolute top-0 left-0 flex h-full w-full p-1">
+                <div className="w-full shrink rounded-lg border border-white" />
+              </div>
+              <h1 className="text-center text-xl font-semibold">
+                สมัครเลยตอนนี้
+              </h1>
+              <p>ลงทะเบียนเข้าสมัครสอบ TUMSO</p>
+              <div className="relative mt-6 p-1">
+                <button className="min-w-[200px] rounded-lg bg-white py-2 px-4 font-medium text-gray-900 shadow-md">
+                  ลงทะเบียน
+                </button>
+                <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+              </div>
+              <p className="mt-2 text-center text-xs text-gray-400">
+                เริ่มวันที่ 23 ธันวาคม 2565
+              </p>
+            </motion.div>
+          </div>
+          <div className="relative mx-auto hidden w-full max-w-lg flex-col switch:flex">
+            <motion.div
+              animate={{
+                y: sy > 2200 ? sy - 2200 + 200 : 0,
+                x: sy >= docHeight - 100 ? "280px" : 0
+              }}
+              className="relative z-[12] mx-auto flex w-full max-w-lg flex-col items-center rounded-xl bg-[#434894] py-8 text-white shadow-md"
+            >
+              <div className="absolute top-0 left-0 flex h-full w-full p-1">
+                <div className="w-full shrink rounded-lg border border-white" />
+              </div>
+              <h1 className="text-center text-xl font-semibold">
+                สมัครเลยตอนนี้
+              </h1>
+              <p>ลงทะเบียนเข้าสมัครสอบ TUMSO</p>
+              <div className="relative mt-6 p-1">
+                <button className="min-w-[200px] rounded-lg bg-white py-2 px-4 font-medium text-gray-900 shadow-md">
+                  ลงทะเบียน
+                </button>
+                <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+              </div>
+              <p className="mt-2 text-center text-xs text-gray-400">
+                เริ่มวันที่ 23 ธันวาคม 2565
+              </p>
+            </motion.div>
+            <motion.div
+              className="absolute z-[11] mx-auto flex w-5 flex-col items-center rounded-xl bg-[#434894] py-8 text-white shadow-md"
+              animate={{
+                height: sy > 2100 ? `${210 + (sy - 2100) * 3}px` : "210px",
+                // eslint-disable-next-line no-nested-ternary
+                x: sy > 2100 ? (sy >= docHeight - 100 ? "200px" : "-100px") : 0,
+                width: sy > 2100 ? `${32 + (sy - 2100) * 2}rem` : "100%"
+              }}
+            />
+          </div>
+        </div>
+        <div className="font-noto-sans-thai relative z-[9] flex min-h-[800px] bg-white">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: sy >= docHeight - 60 ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex w-full flex-col items-center justify-center pr-0 switch:w-1/2 switch:pr-[100px]"
+          >
+            <h1 className="mb-2 text-center text-2xl font-semibold">
+              ติดต่อเรา
+            </h1>
+            <div className="text-center text-gray-800 switch:text-left">
+              <h1>Facbook: TUMSO 19th</h1>
+              <h1>Email: tumso19@triamudom.ac.th</h1>
+              <h1>โทร: 081-111-1111</h1>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default Page

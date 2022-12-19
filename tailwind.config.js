@@ -15,13 +15,24 @@ module.exports = {
       "6xl": "4rem"
     },
     extend: {
+      screens: {
+        switch: "1110px"
+      },
       colors: {
-        malt: {
-          100: "#FEF8F2",
-          200: "#F9F3ED"
+        "deep-purple": {
+          800: "#242038"
         },
-        lapis: {
-          600: "#2E6CF6"
+        malt: {
+          400: "#f7ece1"
+        },
+        "silver-purple": {
+          200: "#cac4ce"
+        },
+        "blue-purple": {
+          400: "#8d86c9"
+        },
+        "pastel-purple": {
+          500: "#9067c6"
         }
       }
     }
