@@ -256,7 +256,7 @@ const Page = () => {
           </div>
         </div>
         <div className="font-noto-sans-thai relative z-[10] flex min-h-[500px] w-full items-center justify-center bg-white text-gray-900 sm:min-h-[787px] sm:py-32">
-          <div className="absolute top-0 left-0 h-[200px] w-[140vw] sm:h-[400px] sm:w-[130vw] md:w-[120vw]">
+          <div className="absolute top-0 left-0 h-[200px] w-[140vw] sm:h-[400px] sm:w-[130vw] md:w-[120vw] lg:w-full">
             <motion.div
               animate={{
                 height:
