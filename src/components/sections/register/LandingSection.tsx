@@ -1,11 +1,18 @@
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion"
+import { useState } from "react"
+
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
+import { SignInWithGoogle } from "@/components/buttons/animated/SignInWithGoogle"
+import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useRegister } from "@/contexts/RegisterContext"
 
 export const LandingSection = () => {
   const { section } = useRegister()
+  const [showLogIn, setShowLogin] = useState(false)
+  const { user } = useFirebaseAuth()
   return (
     <>
-      <div className="mt-8">
+      <div className="mt-8 mb-10">
         <div className="rounded-xl border border-gray-600 border-opacity-60 px-6 pt-4 pb-5">
           <h1 className="font-semibold">ข้อมูลการสมัคร</h1>
           <ol className="list-decimal pl-6">
@@ -45,15 +52,39 @@ export const LandingSection = () => {
           </ol>
         </div>
       </div>
-      <div className="mt-10 flex justify-center">
-        <IlluminateButton
-          action={() => {
-            section.set("student")
-          }}
-        >
-          <span>เริ่มกรอกฟอร์ม</span>
-        </IlluminateButton>
-      </div>
+      <AnimateSharedLayout>
+        <AnimatePresence>
+          <motion.div
+            key={`${showLogIn ? "logable" : "continue"}`}
+            initial={{ y: 10, opacity: 0 }}
+            exit={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            layout={"position"}
+            className="flex justify-center"
+          >
+            {showLogIn ? (
+              <SignInWithGoogle
+                successAction={() => {
+                  section.set("student")
+                }}
+              />
+            ) : (
+              <IlluminateButton
+                action={() => {
+                  if (user.isLoggedIn()) {
+                    section.set("student")
+                    return
+                  }
+                  setShowLogin(true)
+                }}
+              >
+                <span>เริ่มกรอกฟอร์ม</span>
+              </IlluminateButton>
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </AnimateSharedLayout>
     </>
   )
 }

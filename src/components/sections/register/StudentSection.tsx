@@ -6,7 +6,7 @@ export const StudentSection = () => {
     <div>
       <div className="mt-6">
         <h1 className="text-lg font-medium">ข้อมูลโรงเรียน</h1>
-        <p className="leading-4 text-gray-600">
+        <p className="leading-4 text-gray-500">
           หากไม่พบข้อมูลโรงเรียนในระบบ ให้เลือก{" "}
           <span className="font-medium text-gray-800">
             ไม่พบโรงเรียนในช่องค้นหา
@@ -19,7 +19,7 @@ export const StudentSection = () => {
       </div>
       <div className="mt-6">
         <h1 className="text-lg font-medium">ข้อมูลนักเรียน</h1>
-        <p className="leading-4 text-gray-600">
+        <p className="leading-4 text-gray-500">
           หากมีชื่อกลางให้กรอกในช่อง นามสกุล กรอกข้อมูลเป็นภาษาไทยเท่านั้น
         </p>
         <div className="mt-4">

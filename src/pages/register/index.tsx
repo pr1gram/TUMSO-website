@@ -1,7 +1,10 @@
 import { SectionContainer } from "@/components/sections/register/SectionContainer"
+import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { RegisterProvider } from "@/contexts/RegisterContext"
 
 const Page = () => {
+  const { user } = useFirebaseAuth()
+
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
       <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
