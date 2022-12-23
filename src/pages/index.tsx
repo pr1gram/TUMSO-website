@@ -1,35 +1,12 @@
 import { ClockIcon } from "@heroicons/react/24/outline"
 import { CalendarIcon, ChevronUpIcon } from "@heroicons/react/24/solid"
-import classnames from "classnames"
-import type { Transition } from "framer-motion"
 import { motion, useScroll } from "framer-motion"
-import type { FC } from "react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
+import { RevealText } from "@/components/texts/animated/reveal"
 import { useWindowDimensions } from "@/utils/dimension"
 
-const RevealText: FC<{
-  children: any
-  className?: string
-  transition?: Transition
-}> = ({ children, className = "", transition }) => {
-  return (
-    <div className="relative">
-      <motion.h1
-        initial={{ width: "0%" }}
-        animate={{ width: "100%" }}
-        transition={transition}
-        className={classnames(
-          "wrap-all absolute top-0 left-0 w-full overflow-hidden text-clip whitespace-nowrap",
-          className
-        )}
-      >
-        {children}
-      </motion.h1>
-      <h1 className={classnames("mx-1 opacity-0", className)}>{children}</h1>
-    </div>
-  )
-}
 const Page = () => {
   const { scrollY } = useScroll()
   const [sy, setSY] = useState(0)
@@ -283,7 +260,9 @@ const Page = () => {
                 <button className="min-w-[200px] rounded-lg bg-white py-2 px-4 font-medium text-gray-900 shadow-md">
                   ลงทะเบียน
                 </button>
-                <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+                <Link href="register">
+                  <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+                </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
                 เริ่มวันที่ 23 ธันวาคม 2565
@@ -309,7 +288,9 @@ const Page = () => {
                 <button className="min-w-[200px] rounded-lg bg-white py-2 px-4 font-medium text-gray-900 shadow-md">
                   ลงทะเบียน
                 </button>
-                <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+                <Link href="register">
+                  <div className="absolute top-0 right-0 h-full w-full shrink rounded-xl border border-white" />
+                </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
                 เริ่มวันที่ 23 ธันวาคม 2565

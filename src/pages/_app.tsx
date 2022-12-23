@@ -5,7 +5,7 @@ import type { AppProps } from "next/app"
 
 const antonio = Antonio({ subsets: ["latin"] })
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] })
-const notoSansThai = Noto_Sans_Thai()
+const notoSansThai = Noto_Sans_Thai({ subsets: ["thai", "latin"] })
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -18,7 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           font-family: ${plusJakartaSans.style.fontFamily};
         }
         .font-noto-sans-thai {
-          font-family: ${notoSansThai.style.fontFamily};
+          font-family: ${notoSansThai.style.fontFamily} !important;
         }
       `}</style>
       <Component {...pageProps} />
