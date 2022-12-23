@@ -40,11 +40,11 @@ export const ShortTextInput: FC<{
             setSelfVal(event.target.value)
           }}
           value={selfVal}
-          className="w-full rounded-md border border-gray-500 border-opacity-60 py-1 pl-3 pr-8 outline-none focus:border-[#434894]"
+          className="w-full rounded-md border border-gray-500 border-opacity-60 py-1 pl-7 pr-3 outline-none focus:border-[#434894]"
           placeholder={placeholder}
           type={type}
         />
-        <div className="absolute top-0 right-3 flex h-full items-center">
+        <div className="absolute top-0 left-2 flex h-full items-center">
           {required && (
             <ExpandableBadge
               title={"Required"}

@@ -66,10 +66,10 @@ export const SelectionInput: FC<{
           }}
           className={classnames(
             !selected && "text-gray-400",
-            "absolute top-0 left-0 z-[12] -ml-[1px] -mt-[1px] flex w-[101.5%] cursor-pointer items-center rounded-md border border-gray-500 border-opacity-60 bg-white px-3"
+            "absolute top-0 left-0 z-[21] -ml-[1px] -mt-[1px] flex w-[101.5%] cursor-pointer items-center rounded-md border border-gray-500 border-opacity-60 bg-white px-3"
           )}
         >
-          <div className="absolute top-0 flex w-full items-center justify-between py-1 pr-10">
+          <div className="absolute top-0 flex w-full items-center justify-between py-1 pr-5 pl-4">
             <h1 className="">{selected || placeholder}</h1>
             <motion.div
               animate={{ rotate: showall ? 180 : 0 }}
@@ -84,7 +84,7 @@ export const SelectionInput: FC<{
           animate={{
             clipPath: showall ? "inset(0 0 0.1% 0)" : "inset(0 0 100% 0)"
           }}
-          className="absolute left-0 z-[13] -mx-[1px] w-[101.5%] rounded-b-md"
+          className="absolute left-0 z-[22] -mx-[1px] w-[101.5%] rounded-b-md"
         >
           {options.map((v, k) => {
             return (
@@ -106,14 +106,14 @@ export const SelectionInput: FC<{
             )
           })}
         </motion.div>
-        <div className="absolute top-0 right-2 flex h-full items-center">
+        <div className="absolute top-0 left-2 z-[25] flex h-full items-center">
           {required && (
             <ExpandableBadge
               title={"Required"}
               description={"ผู้สมัครจำเป็นต้องกรอกข้อมูลนี้"}
               hidden={valueValidator(value)}
             >
-              <ExclamationCircleIcon className="relative z-[12] ml-[1px] mt-[1px] h-3.5 w-3.5 text-white" />
+              <ExclamationCircleIcon className="relative z-[23] ml-[1px] mt-[1px] h-3.5 w-3.5 text-white" />
             </ExpandableBadge>
           )}
           <motion.div
@@ -126,7 +126,7 @@ export const SelectionInput: FC<{
             className="absolute top-[8px] right-0"
           >
             <CheckIcon
-              className="relative z-[12] h-4 w-4 text-green-500"
+              className="relative z-[23] h-4 w-4 text-green-500"
               stroke="currentColor"
               strokeWidth={1}
             />

@@ -4,7 +4,7 @@ import { RegisterProvider } from "@/contexts/RegisterContext"
 const Page = () => {
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
-      <div className="mx-auto flex w-full max-w-2xl flex-col px-6">
+      <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
         <div>
           <h1 className="text-2xl font-semibold">ลงทะเบียนสมัครแข่งขัน</h1>
           <h1 className="mt-1 font-medium leading-4 text-gray-600">

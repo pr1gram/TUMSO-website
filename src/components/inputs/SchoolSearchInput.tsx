@@ -196,12 +196,13 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
         maxResults={10}
         styling={{
           boxShadow: "none",
-          zIndex: 20,
+          zIndex: 29,
           borderRadius: "6px",
           height: "32px",
           color: "rgb(17, 24, 39)",
           fontFamily: "inherit",
-          border: "1px solid rgba(107, 114, 128, 0.6)"
+          border: "1px solid rgba(107, 114, 128, 0.6)",
+          searchIconMargin: "0 0 0 26px"
         }}
         items={items}
       />

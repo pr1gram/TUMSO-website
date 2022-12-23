@@ -18,7 +18,7 @@ export const SchoolInputGroup: FC<{}> = () => {
         ชื่อโรงเรียน{" "}
         <span className="text-gray-600">(ค้นหาด้วย 2 ตัวอักษรขึ้นไป)</span>
       </h1>
-      <div className="flex max-w-[420px] items-center space-x-2">
+      <div className="relative flex max-w-[420px] items-center space-x-2">
         <div className="w-full">
           {notListed ? (
             <ShortTextInput
@@ -29,7 +29,7 @@ export const SchoolInputGroup: FC<{}> = () => {
             <SchoolSearchInput updateState={setSchool} />
           )}
         </div>
-        <div className="relative flex items-center">
+        <div className="absolute top-2 left-0 z-[32] flex items-center">
           <ExpandableBadge
             title={"Required"}
             description={"ผู้สมัครจำเป็นต้องกรอกข้อมูลนี้"}

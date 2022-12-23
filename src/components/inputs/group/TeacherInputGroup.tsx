@@ -27,37 +27,40 @@ export const TeacherInputGroup: FC<{}> = () => {
             required={true}
           />
         </div>
-        <div className="shrink-0">
-          <ShortTextInput
-            title={
-              <span>
-                ชื่อ <span className="text-gray-600">(ไม่ต้องใส่คำนำหน้า)</span>
-              </span>
-            }
-            updateState={setFname}
-            placeholder={"ชื่อ"}
-            valueValidator={emptyStringValidator}
-            required={true}
-          />
-        </div>
-        <div className="shrink-0">
-          <ShortTextInput
-            title={
-              <span>
-                นามสกุล{" "}
-                <span className="text-gray-600">
-                  (หากมีชื่อกลางให้ใส่ช่องนี้)
+        <div className="flex flex-wrap items-center space-y-1 xs:space-y-0 sm:flex-row sm:flex-nowrap">
+          <div className="min-w-[170px] grow xs:mr-4 sm:shrink">
+            <ShortTextInput
+              title={
+                <span>
+                  ชื่อ{" "}
+                  <span className="text-gray-600">(ไม่ต้องใส่คำนำหน้า)</span>
                 </span>
-              </span>
-            }
-            updateState={setLname}
-            placeholder={"นามสกุล"}
-            valueValidator={emptyStringValidator}
-            required={true}
-          />
+              }
+              updateState={setFname}
+              placeholder={"ชื่อ"}
+              valueValidator={emptyStringValidator}
+              required={true}
+            />
+          </div>
+          <div className="shrink-0 grow">
+            <ShortTextInput
+              title={
+                <span>
+                  นามสกุล{" "}
+                  <span className="text-gray-600">
+                    (หากมีชื่อกลางให้ใส่ช่องนี้)
+                  </span>
+                </span>
+              }
+              updateState={setLname}
+              placeholder={"นามสกุล"}
+              valueValidator={emptyStringValidator}
+              required={true}
+            />
+          </div>
         </div>
       </div>
-      <div className="flex space-x-4">
+      <div className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-4">
         <ShortTextInput
           title={"อีเมล"}
           updateState={setEmail}
@@ -66,14 +69,16 @@ export const TeacherInputGroup: FC<{}> = () => {
           valueValidator={emailValidator}
           required={true}
         />
-        <ShortTextInput
-          title={"เบอร์โทรศัพท์"}
-          updateState={setPhone}
-          blockedChar={["-"]}
-          valueValidator={phoneNumberValidator}
-          placeholder={"ตัวอย่าง 08XXXXXXXX"}
-          required={true}
-        />
+        <div className="max-w-[200px] xs:max-w-none">
+          <ShortTextInput
+            title={"เบอร์โทรศัพท์"}
+            updateState={setPhone}
+            blockedChar={["-"]}
+            valueValidator={phoneNumberValidator}
+            placeholder={"ตัวอย่าง 08XXXXXXXX"}
+            required={true}
+          />
+        </div>
       </div>
     </div>
   )

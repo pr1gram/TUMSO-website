@@ -16,7 +16,8 @@ module.exports = {
     },
     extend: {
       screens: {
-        switch: "1110px"
+        switch: "1110px",
+        xs: "490px"
       },
       colors: {
         "deep-purple": {
