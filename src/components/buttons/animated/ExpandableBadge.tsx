@@ -41,6 +41,7 @@ export const ExpandableBadge: FC<{
           onHoverEnd={() => {
             setInfoHover(false)
           }}
+          initial={{ width: "100%", height: "100%", borderRadius: "20px" }}
           animate={
             sinfo
               ? { height: "260%", width: "100px", borderRadius: "6px" }
@@ -54,6 +55,7 @@ export const ExpandableBadge: FC<{
         >
           {children}
           <motion.div
+            initial={{ clipPath: "inset(0 100% 60% 0)" }}
             animate={
               // eslint-disable-next-line no-nested-ternary
               sinfo

@@ -136,6 +136,8 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
   const [keyword, setKW] = useState("")
   const [prevFL, setPrevFL] = useState("")
   const [selection, setSelection] = useState("")
+  const [reloadStr, setReloadStr] = useState<string>("")
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     updateState(selection)
@@ -144,6 +146,7 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
   const getSchoolIndex = async (startChar: string, subDir?: string) => {
     if (startChar === prevFL) return
     let data
+    setLoading(true)
     if (subDir) {
       data = await fetch(`/schools/indexed/${subDir}/${startChar}.csv`, {
         method: "GET"
@@ -160,6 +163,7 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
     }))
     setItems(processed)
     setPrevFL(startChar)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -184,6 +188,13 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
     if (!possibleFirstLetters.includes(firstLetter)) return
     getSchoolIndex(firstLetter)
   }, [keyword])
+
+  useEffect(() => {
+    if (items.length > 0) {
+      console.log(keyword)
+      setReloadStr(keyword)
+    }
+  }, [items])
   return (
     <div>
       <ReactSearchAutocomplete
@@ -193,6 +204,8 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
         onSelect={(v: any) => {
           setSelection(v.name)
         }}
+        inputSearchString={reloadStr}
+        showNoResultsText={loading ? "กำลังโหลดข้อมูล..." : "ไม่พบในฐานข้อมูล"}
         maxResults={10}
         styling={{
           boxShadow: "none",

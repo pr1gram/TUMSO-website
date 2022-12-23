@@ -18,7 +18,7 @@ export const TeacherInputGroup: FC<{}> = () => {
   return (
     <div className="mt-2 space-y-2">
       <div className="flex flex-col space-y-1 sm:flex-row sm:space-y-0 sm:space-x-4">
-        <div className="shrink">
+        <div className="max-w-[200px] shrink xs:max-w-[224px] sm:max-w-none">
           <ShortTextInput
             title={<span>คำนำหน้าชื่อ</span>}
             updateState={setFname}
