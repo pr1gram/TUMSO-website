@@ -79,7 +79,7 @@ export const StudentInputGroup: FC<{}> = () => {
           <ShortTextInput
             title={"เบอร์โทรศัพท์"}
             updateState={setPhone}
-            blockedChar={["-"]}
+            blockedChar={["-", " "]}
             valueValidator={phoneNumberValidator}
             placeholder={"ตัวอย่าง 08XXXXXXXX"}
             required={true}
