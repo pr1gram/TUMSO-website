@@ -191,7 +191,6 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
 
   useEffect(() => {
     if (items.length > 0) {
-      console.log(keyword)
       setReloadStr(keyword)
     }
   }, [items])
