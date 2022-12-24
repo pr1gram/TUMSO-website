@@ -41,6 +41,7 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
       setHD(false)
     }
   }
+
   const saveData = async () => {
     setSavingStatus("pending")
     // Save data
@@ -192,7 +193,7 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
           section.is("document") ? { display: "block" } : { display: "none" }
         }
       >
-        <DocumentSection />
+        <DocumentSection save={saveData} />
       </motion.div>
     </div>
   )

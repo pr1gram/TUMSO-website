@@ -54,7 +54,7 @@ export const StudentInputGroup: FC<{
               title={
                 <span>
                   ชื่อ{" "}
-                  <span className="text-gray-600">(ไม่ต้องใส่คำนำหน้า)</span>
+                  <span className="text-gray-600">(ไม่ต้องระบุคำนำหน้า)</span>
                 </span>
               }
               updateState={setFname}
@@ -70,7 +70,7 @@ export const StudentInputGroup: FC<{
                 <span>
                   นามสกุล{" "}
                   <span className="text-gray-600">
-                    (หากมีชื่อกลางให้ใส่ช่องนี้)
+                    (หากมีชื่อกลางให้ระบุในช่องนี้)
                   </span>
                 </span>
               }

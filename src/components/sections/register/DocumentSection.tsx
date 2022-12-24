@@ -13,6 +13,7 @@ import {
 } from "@heroicons/react/24/solid"
 import { motion } from "framer-motion"
 import Router from "next/router"
+import type { FC } from "react"
 import { useEffect, useRef, useState } from "react"
 
 import { ExpandableBadge } from "@/components/buttons/animated/ExpandableBadge"
@@ -22,24 +23,39 @@ import { useFireStore } from "@/contexts/firestore"
 import { useRegister } from "@/contexts/RegisterContext"
 import { documentValidator } from "@/utils/validators"
 
-export const DocumentSection = () => {
+export const DocumentSection: FC<{ save: () => Promise<void> }> = ({
+  save
+}) => {
   const { Updater, Storage, section } = useRegister()
   const { uploadDocument, getDocumentLink, submitForms } = useFireStore()
   const [confirmed, setConfirmed] = useState(false)
   const inputRef = useRef(null)
   const newPageRef = useRef(null)
   const [loading, setLoading] = useState(false)
+  const [invalidType, setInvalidType] = useState(false)
+  const [invalidSize, setInvalidSize] = useState(false)
 
   const upload = async (files: FileList | null) => {
+    setInvalidType(false)
+    setInvalidSize(false)
     if (!files) return
     const file = files[0]
     if (!file) return
+    if (file.type !== "application/pdf") {
+      setInvalidType(true)
+      return
+    }
+    if (file.size > 10000000) {
+      setInvalidSize(true)
+      return
+    }
     const path = await uploadDocument.call(file)
     if (path) {
       Storage.updateSection("document", {
         filePath: path.path,
         date: Timestamp.now().seconds
       })
+      save()
     }
   }
 
@@ -184,6 +200,20 @@ export const DocumentSection = () => {
               </div>
             </IlluminateButton>
           )}
+          <div className="mt-1">
+            {invalidSize && (
+              <div className="flex items-center space-x-1 text-red-400">
+                <ExclamationTriangleIcon className="h-4 w-4" />
+                <span className="text-sm">ไฟล์มีขนาดใหญ่เกินกว่า 10 MB</span>
+              </div>
+            )}
+            {invalidType && (
+              <div className="flex items-center space-x-1 text-red-400">
+                <ExclamationTriangleIcon className="h-4 w-4" />
+                <span className="text-sm">ประเภทไฟล์ไม่ถูกต้อง</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="mt-6 flex flex-col items-center border-t border-gray-900 border-opacity-50 pt-5">
