@@ -27,7 +27,7 @@ export const DocumentSection = () => {
     if (path) {
       Storage.updateSection("document", {
         filePath: path.path,
-        date: Timestamp.now()
+        date: Timestamp.now().seconds
       })
     }
   }
@@ -36,12 +36,12 @@ export const DocumentSection = () => {
     if (!Storage.data.document?.filePath) return
     const url = await getDocumentLink(Storage.data.document?.filePath)
     if (url) {
-      if (newPageRef.current) {
-        // @ts-ignore
-        const element: HTMLAnchorElement = newPageRef.current
-        element.href = url
-        element.click()
-      }
+      const element = document.createElement("a")
+      element.href = url
+      element.target = "_blank"
+      document.body.append(element)
+      element.click()
+      element.remove()
     }
   }
 
@@ -78,6 +78,7 @@ export const DocumentSection = () => {
           <a
             href="/documents/forms.pdf"
             download={"หนังสือรับรองสถานภาพ.pdf"}
+            target="_blank"
             className="flex cursor-pointer items-start space-x-1 hover:text-blue-600 hover:underline"
           >
             <ArrowDownTrayIcon
