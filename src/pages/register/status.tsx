@@ -20,6 +20,12 @@ const Page = () => {
     switch (submissionData?.status) {
       case "waiting":
         return <span className="text-yellow-600">รอการตรวจสอบ</span>
+      case "reject":
+        return <span className="text-red-500">ถูกปฏิเสธ</span>
+      case "editing":
+        return <span className="text-orange-500">รอการแก้ไข</span>
+      case "accepted":
+        return <span className="text-green-600">ตรวจสอบแล้ว</span>
       default:
         return <span className="text-red-400">ไม่พบสถานะ</span>
     }
@@ -75,12 +81,15 @@ const Page = () => {
             </h1>
           </div>
         </div>
-        <p className="mt-2 text-center text-sm leading-[16px] text-gray-500">
+        <p className="mt-2 text-center text-sm leading-[17px] text-gray-500">
           การสมัครจะถือว่าเสร็จสิ้นโดนสมบูรณ์ก็ต่อเมื่อระบบแสดงสถานะเป็น{" "}
           <span className="text-green-600">ตรวจสอบแล้ว</span>{" "}
-          หากจำเป็นต้องมีการแก้ไขระบบจะแสดงสถานะ{" "}
+          หากจำเป็นต้องมีการแก้ไข ระบบจะแสดงสถานะ{" "}
           <span className="text-orange-500">รอการแก้ไข</span>{" "}
-          โดยผู้สมัครจะต้องติดต่อเข้ามาตามช่องทางติดต่อที่ระบุไว้
+          หรือหากใบสมัครถูกปฏิเสธจะแสดงสถานะ{" "}
+          <span className="text-red-500">ถูกปฏิเสธ</span>{" "}
+          ถ้าผู้สมัครได้รับหนึ่งในสองสถานะนี้
+          ผู้สมัครจะต้องติดต่อเพื่อสอบถามรายละเอียดเพิ่มเติมตามช่องทางติดต่อที่ระบุไว้
         </p>
       </div>
     </div>
