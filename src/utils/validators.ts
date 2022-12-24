@@ -1,3 +1,5 @@
+import type { DocumentData } from "@/types/DocumentData"
+
 export const emptyStringValidator = (value: string) => {
   return value !== ""
 }
@@ -20,4 +22,8 @@ export const phoneNumberValidator = (value: string) => {
   }
 
   return value.length === 9
+}
+
+export const documentValidator = (d: DocumentData | null) => {
+  return d !== null && emptyStringValidator(d.filePath)
 }

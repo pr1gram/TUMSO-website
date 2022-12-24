@@ -11,6 +11,7 @@ import hash from "object-hash"
 import { useState } from "react"
 
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
+import type { FormData } from "@/types/FormData"
 import type { StorableObject } from "@/types/StorableObject"
 
 type ResolvableStatus = "pending" | "failed" | "resolved"
@@ -27,6 +28,21 @@ export const useFireStore = () => {
   const [saveStorableStatus, setSSS] = useState<ResolvableStatus>("resolved")
   const [getSavedDataStatus, setGSDS] = useState<ResolvableStatus>("resolved")
   const [uploadFileStatus, setUFS] = useState<ResolvableStatus>("resolved")
+
+  const submitForms = async (data: FormData) => {
+    const hashedValue = hash.sha1(data)
+    try {
+      await setDoc(doc(collection(db, "submitted"), user.uid), {
+        data,
+        checksum: hashedValue,
+        timestamp: Timestamp.now(),
+        status: "waiting"
+      })
+      return true
+    } catch (_) {
+      return false
+    }
+  }
 
   const saveStorable = async (value: StorableObject) => {
     setSSS("pending")
@@ -81,6 +97,23 @@ export const useFireStore = () => {
     }
   }
 
+  const getSubmitStatus = async (): Promise<
+    { status: string; timestamp: Timestamp } | undefined
+  > => {
+    try {
+      const docData = await getDoc(doc(collection(db, "submitted"), user.uid))
+      if (docData.exists()) {
+        return {
+          status: docData.get("status"),
+          timestamp: docData.get("timestamp")
+        }
+      }
+      return undefined
+    } catch (e) {
+      return undefined
+    }
+  }
+
   return {
     db,
     getSavedStorable: {
@@ -95,6 +128,8 @@ export const useFireStore = () => {
       call: uploadDocument,
       status: uploadFileStatus
     },
-    getDocumentLink
+    getDocumentLink,
+    submitForms,
+    getSubmitStatus
   }
 }

@@ -8,6 +8,7 @@ import { useRegister } from "@/contexts/RegisterContext"
 import type { AvailableSections } from "@/types/AvailableSections"
 import { subjectValidator, translateFromEng } from "@/utils/fixedSelection"
 import {
+  documentValidator,
   emailValidator,
   emptyStringValidator,
   phoneNumberValidator
@@ -53,7 +54,7 @@ export const SectionIndicator: FC<{ title: string; id: string }> = ({
       }
       case "document": {
         const d = Storage.data.document
-        return d !== null && emptyStringValidator(d.filePath)
+        return documentValidator(d)
       }
       default:
         return false
@@ -61,8 +62,11 @@ export const SectionIndicator: FC<{ title: string; id: string }> = ({
   }
 
   useEffect(() => {
-    setSVD(validateSection)
+    const val = validateSection()
+    setSVD(val)
+    section.validation.update(id as AvailableSections, val)
   }, [Storage.storageDep])
+
   return (
     <div
       onClick={() => {

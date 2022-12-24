@@ -5,9 +5,22 @@ import type { SectionHandler } from "@/types/SectionHandler"
 
 export const useSectionHandler = (): SectionHandler => {
   const [section, setSection] = useState<AvailableSections>("landing")
+  const [validationResult, setValResult] = useState({
+    student: false,
+    teacher: false,
+    selection: false,
+    document: false
+  })
 
   const compareSection = (comparable: string) => {
     return comparable === section
+  }
+
+  const updateValidationResult = (
+    target: AvailableSections,
+    result: boolean
+  ) => {
+    setValResult((prev) => ({ ...prev, [target]: result }))
   }
 
   const getSectionNumber = () => {
@@ -28,12 +41,27 @@ export const useSectionHandler = (): SectionHandler => {
   return {
     get: { name: section, number: getSectionNumber() },
     set: setSection,
-    is: compareSection
+    is: compareSection,
+    validation: {
+      update: updateValidationResult,
+      get: validationResult,
+      getAll: Object.values(validationResult).reduce((pre, curr) => pre && curr)
+    }
   }
 }
 
 export const defaultSectionHandler: SectionHandler = {
   get: { name: "landing", number: 0 },
   set: () => {},
-  is: () => false
+  is: () => false,
+  validation: {
+    update: () => {},
+    getAll: false,
+    get: {
+      student: false,
+      teacher: false,
+      selection: false,
+      document: false
+    }
+  }
 }
