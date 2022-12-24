@@ -1,5 +1,6 @@
 import type { Timestamp } from "@firebase/firestore"
 import { CloudArrowUpIcon } from "@heroicons/react/24/outline"
+import { ArrowPathIcon } from "@heroicons/react/24/solid"
 import { motion } from "framer-motion"
 import hash from "object-hash"
 import type { FC } from "react"
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { LandingSection } from "@/components/sections/register/LandingSection"
+import { SelectionSection } from "@/components/sections/register/SelectionSection"
 import { StudentSection } from "@/components/sections/register/StudentSection"
 import { TeacherSection } from "@/components/sections/register/TeacherSection"
 import { SectionIndicator } from "@/components/texts/static/SectionIndicator"
@@ -20,9 +22,23 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
   const { signOut, user } = useFirebaseAuth()
   const { saveStorable, getSavedStorable } = useFireStore()
   const [lastSave, setLastSave] = useState<Timestamp | null>(null)
+  const [lastDataHash, setLastDataHash] = useState<string>("")
   const [savingStatus, setSavingStatus] = useState("resolved")
   const [loadingData, setLoadingData] = useState(false)
+  const [recheckTimeout, setRecheckTimout] = useState(setTimeout(() => {}, 100))
+  const [hasDiffrence, setHD] = useState(false)
 
+  const checkHash = (lastHash?: string) => {
+    if (!lastHash) {
+      if (!lastDataHash) return
+    }
+    const objHash = hash.sha1(Storage.data)
+    if (lastHash ? objHash !== lastHash : objHash !== lastDataHash) {
+      setHD(true)
+    } else {
+      setHD(false)
+    }
+  }
   const saveData = async () => {
     setSavingStatus("pending")
     // Save data
@@ -38,9 +54,19 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
       setSavingStatus("checksum_mismatch")
       return
     }
+    checkHash(savedData.checksum)
     setLastSave(savedData.timestamp)
+    setLastDataHash(savedData.checksum)
     setSavingStatus("resolved")
   }
+
+  useEffect(() => {
+    clearTimeout(recheckTimeout)
+    const to = setTimeout(() => {
+      checkHash()
+    }, 1000)
+    setRecheckTimout(to)
+  }, [Storage.storageDep, lastDataHash])
 
   useEffect(() => {
     if (!user.isLoggedIn()) {
@@ -53,11 +79,14 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
   }, [user.isLoggedIn(), section])
 
   const getData = async () => {
+    setLoadingData(true)
     const data = await getSavedStorable.call()
     if (data) {
       Updater.setReceivedData(data.stored as FormData)
       setLastSave(data.timestamp)
+      setLastDataHash(data.checksum)
     }
+    setLoadingData(false)
   }
 
   useEffect(() => {
@@ -107,6 +136,18 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
   return (
     <div>
       {!section.is("landing") && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={
+            loadingData || savingStatus === "pending"
+              ? { opacity: 1, display: "block" }
+              : { opacity: 0, display: "none" }
+          }
+          transition={{ duration: 0.3 }}
+          className="fixed top-0 left-0 z-[100] min-h-screen w-full cursor-not-allowed bg-gray-100 bg-opacity-40 backdrop-blur-sm"
+        ></motion.div>
+      )}
+      {!section.is("landing") && (
         <div className={"mt-4"}>
           <h1 className="font-medium">ส่วนที่ {section.get.number}/4</h1>
           <SectionIndicator title={"1. ข้อมูลนักเรียน"} id={"student"} />
@@ -117,16 +158,33 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
             id={"document"}
           />
           <div className="mt-4">
-            <IlluminateButton width={100} action={saveData}>
-              <div className="flex items-center space-x-1">
-                <CloudArrowUpIcon
-                  stroke={"currentColor"}
-                  strokeWidth={1.5}
-                  className="h-5 w-5"
-                />
-                <span className="font-normal">บันทึก</span>
-              </div>
-            </IlluminateButton>
+            <div className="flex items-center space-x-2">
+              <IlluminateButton width={100} action={saveData}>
+                <div className="flex items-center space-x-2">
+                  {savingStatus === "pending" && (
+                    <ArrowPathIcon className="h-5 w-5 animate-spin" />
+                  )}
+
+                  {savingStatus === "resolved" && (
+                    <CloudArrowUpIcon
+                      stroke={"currentColor"}
+                      strokeWidth={1.5}
+                      className="h-5 w-5"
+                    />
+                  )}
+
+                  <span className="font-normal">บันทึก</span>
+                </div>
+              </IlluminateButton>
+
+              <motion.span
+                transition={{ duration: 0.1 }}
+                animate={{ opacity: hasDiffrence ? 1 : 0 }}
+                className="text-xs text-yellow-600"
+              >
+                *มีการแก้ไขที่ไม่ได้บันทึก
+              </motion.span>
+            </div>
             <h1 className="mt-3 text-sm leading-[8px]">
               บันทึกครั้งล่าสุด: {parseTimestamp(lastSave)}
             </h1>
@@ -155,6 +213,14 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
         }
       >
         <TeacherSection />
+      </motion.div>
+      <motion.div
+        initial={{ display: "none" }}
+        animate={
+          section.is("selection") ? { display: "block" } : { display: "none" }
+        }
+      >
+        <SelectionSection />
       </motion.div>
     </div>
   )

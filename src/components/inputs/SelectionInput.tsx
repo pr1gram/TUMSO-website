@@ -15,7 +15,7 @@ export const SelectionInput: FC<{
   updateState: Dispatch<string | null>
   valueValidator: (value: string | null) => boolean
   value: string | null
-  externalValue?: string
+  externalValue?: string | any
 }> = ({
   options,
   required,

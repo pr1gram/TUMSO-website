@@ -15,6 +15,7 @@ interface ContextInterface {
     updateSection: UpdateSection
     data: FormData
     setStorage: Dispatch<FormData>
+    storageDep: number
   }
   Updater: {
     setReceivedData: Dispatch<FormData | null>
@@ -27,7 +28,8 @@ const defaultValue: ContextInterface = {
   Storage: {
     updateSection: () => {},
     data: defaultFormData,
-    setStorage: () => {}
+    setStorage: () => {},
+    storageDep: 0
   },
   Updater: {
     setReceivedData: () => {},
@@ -43,7 +45,7 @@ type UpdateSection = (
 
 const useStorable = () => {
   const [storage, setStorage] = useState<FormData>(defaultFormData)
-
+  const [storageDep, setStorageDep] = useState(0)
   const updateSection: UpdateSection = (
     section: "school" | "students" | "teacher" | "selection" | "document",
     value: any
@@ -53,18 +55,20 @@ const useStorable = () => {
       d[section] = value
       return d
     })
+    setStorageDep(new Date().getTime())
   }
 
   return {
     updateSection,
     data: storage,
-    setStorage
+    setStorage,
+    storageDep
   }
 }
 
 const useContextAction = (): ContextInterface => {
   const sectionHandler = useSectionHandler()
-  const { updateSection, data, setStorage } = useStorable()
+  const { updateSection, data, setStorage, storageDep } = useStorable()
   const [receivedData, setReceivedData] = useState<FormData | null>(null)
 
   const value = {
@@ -72,7 +76,8 @@ const useContextAction = (): ContextInterface => {
     Storage: {
       updateSection,
       data,
-      setStorage
+      setStorage,
+      storageDep
     },
     Updater: {
       receivedData,
