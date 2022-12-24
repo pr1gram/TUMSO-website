@@ -5,7 +5,8 @@ import { useState } from "react"
 export const IlluminateButton: FC<{
   children: any
   action: () => void
-}> = ({ children, action }) => {
+  width?: number
+}> = ({ children, action, width = 200 }) => {
   const [hover, setHover] = useState(false)
   return (
     <div
@@ -16,7 +17,8 @@ export const IlluminateButton: FC<{
         setHover(false)
       }}
       onClick={action}
-      className="relative flex h-[34px] w-[200px] cursor-pointer items-center justify-center rounded-md border border-gray-400 font-medium text-gray-600"
+      style={{ width: `${width}px` }}
+      className="relative flex h-[34px] cursor-pointer items-center justify-center rounded-md border border-gray-400 font-medium text-gray-600"
     >
       <motion.div
         initial={{ clipPath: "inset(0 100% 100% 0)" }}
@@ -27,7 +29,8 @@ export const IlluminateButton: FC<{
               }
             : { clipPath: "inset(0 100% 100% 0)" }
         }
-        className="absolute h-[34px] w-[200px] rounded-md border border-green-700"
+        style={{ width: `${width}px` }}
+        className="absolute h-[34px] rounded-md border border-green-700"
       />
       <motion.div
         initial={{ clipPath: "inset(0 100% 100% 0)" }}
@@ -38,7 +41,8 @@ export const IlluminateButton: FC<{
               }
             : { clipPath: "inset(0 100% 100% 0)" }
         }
-        className="absolute flex h-[34px] w-[200px] items-center justify-center rounded-md text-green-700"
+        style={{ width: `${width}px` }}
+        className="absolute flex h-[34px] items-center justify-center rounded-md text-green-700"
       >
         {children}
       </motion.div>

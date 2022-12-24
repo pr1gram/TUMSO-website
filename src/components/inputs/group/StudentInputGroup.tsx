@@ -1,8 +1,9 @@
-import type { FC } from "react"
-import { useState } from "react"
+import type { Dispatch, FC } from "react"
+import { useEffect, useState } from "react"
 
 import { SelectionInput } from "@/components/inputs/SelectionInput"
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
+import type { StudentInputGroupData } from "@/types/StudentInputGroupData"
 import {
   emailValidator,
   emptyStringValidator,
@@ -10,12 +11,25 @@ import {
   phoneNumberValidator
 } from "@/utils/validators"
 
-export const StudentInputGroup: FC<{}> = () => {
+export const StudentInputGroup: FC<{
+  updateState: Dispatch<StudentInputGroupData>
+  valueContainer?: StudentInputGroupData
+}> = ({ updateState, valueContainer }) => {
   const [fname, setFname] = useState("")
   const [lname, setLname] = useState("")
   const [title, setTitle] = useState<string | null>(null)
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+
+  useEffect(() => {
+    updateState({
+      title: title || "",
+      firstname: fname,
+      lastname: lname,
+      email,
+      phone
+    })
+  }, [fname, lname, title, email, phone])
 
   const availableTitles = ["ด.ช.", "ด.ญ.", "นาย", "น.ส."]
   const titleValidator = generateIncludeValidator(availableTitles)
@@ -31,6 +45,7 @@ export const StudentInputGroup: FC<{}> = () => {
             updateState={setTitle}
             valueValidator={titleValidator}
             value={title}
+            externalValue={valueContainer?.title}
           />
         </div>
         <div className="flex flex-wrap items-center space-y-1 xs:space-y-0 sm:flex-row sm:flex-nowrap">
@@ -46,6 +61,7 @@ export const StudentInputGroup: FC<{}> = () => {
               placeholder={"ชื่อ"}
               valueValidator={emptyStringValidator}
               required={true}
+              value={valueContainer?.firstname}
             />
           </div>
           <div className="shrink-0 grow">
@@ -62,6 +78,7 @@ export const StudentInputGroup: FC<{}> = () => {
               placeholder={"นามสกุล"}
               valueValidator={emptyStringValidator}
               required={true}
+              value={valueContainer?.lastname}
             />
           </div>
         </div>
@@ -74,6 +91,7 @@ export const StudentInputGroup: FC<{}> = () => {
           placeholder={"อีเมล"}
           valueValidator={emailValidator}
           required={true}
+          value={valueContainer?.email}
         />
         <div className="max-w-[200px] xs:max-w-none">
           <ShortTextInput
@@ -83,6 +101,7 @@ export const StudentInputGroup: FC<{}> = () => {
             valueValidator={phoneNumberValidator}
             placeholder={"ตัวอย่าง 08XXXXXXXX"}
             required={true}
+            value={valueContainer?.phone}
           />
         </div>
       </div>

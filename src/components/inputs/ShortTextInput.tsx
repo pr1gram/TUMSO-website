@@ -13,6 +13,7 @@ export const ShortTextInput: FC<{
   valueValidator?: (value: string) => boolean
   type?: string
   blockedChar?: string[]
+  value?: any
 }> = ({
   title,
   placeholder = "",
@@ -20,13 +21,20 @@ export const ShortTextInput: FC<{
   required = false,
   valueValidator = () => true,
   type = "text",
-  blockedChar = []
+  blockedChar = [],
+  value
 }) => {
   const [selfVal, setSelfVal] = useState("")
 
   useEffect(() => {
     updateState(selfVal)
   }, [selfVal])
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelfVal(value)
+    }
+  }, [value])
 
   return (
     <div>

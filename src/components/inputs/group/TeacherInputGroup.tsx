@@ -1,19 +1,35 @@
-import type { FC } from "react"
-import { useState } from "react"
+import type { Dispatch, FC } from "react"
+import { useEffect, useState } from "react"
 
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
+import { useRegister } from "@/contexts/RegisterContext"
+import type { TeacherInputGroupData } from "@/types/TeacherInputGroupData"
 import {
   emailValidator,
   emptyStringValidator,
   phoneNumberValidator
 } from "@/utils/validators"
 
-export const TeacherInputGroup: FC<{}> = () => {
+export const TeacherInputGroup: FC<{
+  updateState: Dispatch<TeacherInputGroupData>
+}> = ({ updateState }) => {
   const [fname, setFname] = useState("")
   const [lname, setLname] = useState("")
-  const [title, setTitle] = useState<string | null>(null)
+  const [title, setTitle] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+
+  const { Updater } = useRegister()
+
+  useEffect(() => {
+    updateState({
+      title,
+      firstname: fname,
+      lastname: lname,
+      email,
+      phone
+    })
+  }, [fname, lname, title, email, phone])
 
   return (
     <div className="mt-2 space-y-2">
@@ -21,10 +37,11 @@ export const TeacherInputGroup: FC<{}> = () => {
         <div className="max-w-[200px] shrink xs:max-w-[224px] sm:max-w-none">
           <ShortTextInput
             title={<span>คำนำหน้าชื่อ</span>}
-            updateState={setFname}
+            updateState={setTitle}
             placeholder={"คำนำหน้าชื่อ"}
             valueValidator={emptyStringValidator}
             required={true}
+            value={Updater.receivedData?.teacher.title}
           />
         </div>
         <div className="flex flex-wrap items-center space-y-1 xs:space-y-0 sm:flex-row sm:flex-nowrap">
@@ -40,6 +57,7 @@ export const TeacherInputGroup: FC<{}> = () => {
               placeholder={"ชื่อ"}
               valueValidator={emptyStringValidator}
               required={true}
+              value={Updater.receivedData?.teacher.firstname}
             />
           </div>
           <div className="shrink-0 grow">
@@ -56,6 +74,7 @@ export const TeacherInputGroup: FC<{}> = () => {
               placeholder={"นามสกุล"}
               valueValidator={emptyStringValidator}
               required={true}
+              value={Updater.receivedData?.teacher.lastname}
             />
           </div>
         </div>
@@ -68,6 +87,7 @@ export const TeacherInputGroup: FC<{}> = () => {
           placeholder={"อีเมล"}
           valueValidator={emailValidator}
           required={true}
+          value={Updater.receivedData?.teacher.email}
         />
         <div className="max-w-[200px] xs:max-w-none">
           <ShortTextInput
@@ -77,6 +97,7 @@ export const TeacherInputGroup: FC<{}> = () => {
             valueValidator={phoneNumberValidator}
             placeholder={"ตัวอย่าง 08XXXXXXXX"}
             required={true}
+            value={Updater.receivedData?.teacher.phone}
           />
         </div>
       </div>

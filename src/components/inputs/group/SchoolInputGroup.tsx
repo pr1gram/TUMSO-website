@@ -1,17 +1,26 @@
 import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid"
 import { motion } from "framer-motion"
-import type { FC } from "react"
-import { useState } from "react"
+import type { Dispatch, FC } from "react"
+import { useEffect, useState } from "react"
 
 import { ExpandableBadge } from "@/components/buttons/animated/ExpandableBadge"
 import { Checkbox } from "@/components/inputs/Checkbox"
 import { SchoolSearchInput } from "@/components/inputs/SchoolSearchInput"
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
+import { useRegister } from "@/contexts/RegisterContext"
 import { emptyStringValidator } from "@/utils/validators"
 
-export const SchoolInputGroup: FC<{}> = () => {
+export const SchoolInputGroup: FC<{
+  updateState: Dispatch<{ name: string; notListed: boolean }>
+}> = ({ updateState }) => {
   const [school, setSchool] = useState("")
   const [notListed, setNotListed] = useState(false)
+  const { Updater } = useRegister()
+
+  useEffect(() => {
+    updateState({ name: school, notListed })
+  }, [school, notListed])
+
   return (
     <div>
       <h1>
@@ -24,9 +33,13 @@ export const SchoolInputGroup: FC<{}> = () => {
             <ShortTextInput
               updateState={setSchool}
               placeholder={"กรุณากรอกชื่อโรงเรียนของท่าน"}
+              value={Updater.receivedData?.school.name}
             />
           ) : (
-            <SchoolSearchInput updateState={setSchool} />
+            <SchoolSearchInput
+              value={Updater.receivedData?.school.name}
+              updateState={setSchool}
+            />
           )}
         </div>
         <div className="absolute top-2 left-0 z-[32] flex items-center">
@@ -56,7 +69,10 @@ export const SchoolInputGroup: FC<{}> = () => {
       </div>
       <div className="mt-2">
         <div className="flex items-center space-x-2">
-          <Checkbox updateState={setNotListed} />
+          <Checkbox
+            updateState={setNotListed}
+            externalValue={Updater.receivedData?.school.notListed}
+          />
           <span>ไม่พบโรงเรียนในช่องค้นหา</span>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion"
+import Router from "next/router"
 import { useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
@@ -66,6 +67,11 @@ export const LandingSection = () => {
             {showLogIn ? (
               <SignInWithGoogle
                 successAction={() => {
+                  Router.push(
+                    { pathname: "/register", query: { filling: "true" } },
+                    undefined,
+                    { shallow: true }
+                  )
                   section.set("student")
                 }}
               />

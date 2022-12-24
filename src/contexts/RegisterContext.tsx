@@ -1,26 +1,83 @@
-import type { FC, ReactNode } from "react"
-import { createContext, useContext } from "react"
+import type { Dispatch, FC, ReactNode } from "react"
+import { createContext, useContext, useState } from "react"
 
 import {
   defaultSectionHandler,
   useSectionHandler
 } from "@/contexts/SectionHandler"
+import type { FormData } from "@/types/FormData"
+import { defaultFormData } from "@/types/FormData"
 import type { SectionHandler } from "@/types/SectionHandler"
 
 interface ContextInterface {
   section: SectionHandler
+  Storage: {
+    updateSection: UpdateSection
+    data: FormData
+    setStorage: Dispatch<FormData>
+  }
+  Updater: {
+    setReceivedData: Dispatch<FormData | null>
+    receivedData: FormData | null
+  }
 }
 
 const defaultValue: ContextInterface = {
-  section: defaultSectionHandler
+  section: defaultSectionHandler,
+  Storage: {
+    updateSection: () => {},
+    data: defaultFormData,
+    setStorage: () => {}
+  },
+  Updater: {
+    setReceivedData: () => {},
+    receivedData: null
+  }
 }
 const RegisterContext = createContext<ContextInterface>(defaultValue)
 
+type UpdateSection = (
+  section: "school" | "students" | "teacher" | "selection" | "document",
+  value: any
+) => void
+
+const useStorable = () => {
+  const [storage, setStorage] = useState<FormData>(defaultFormData)
+
+  const updateSection: UpdateSection = (
+    section: "school" | "students" | "teacher" | "selection" | "document",
+    value: any
+  ) => {
+    setStorage((prev) => {
+      const d = prev
+      d[section] = value
+      return d
+    })
+  }
+
+  return {
+    updateSection,
+    data: storage,
+    setStorage
+  }
+}
+
 const useContextAction = (): ContextInterface => {
   const sectionHandler = useSectionHandler()
+  const { updateSection, data, setStorage } = useStorable()
+  const [receivedData, setReceivedData] = useState<FormData | null>(null)
 
   const value = {
-    section: sectionHandler
+    section: sectionHandler,
+    Storage: {
+      updateSection,
+      data,
+      setStorage
+    },
+    Updater: {
+      receivedData,
+      setReceivedData
+    }
   }
 
   return value

@@ -3,15 +3,21 @@ import classnames from "classnames"
 import type { Dispatch, FC } from "react"
 import { useEffect, useState } from "react"
 
-export const Checkbox: FC<{ updateState: Dispatch<boolean> }> = ({
-  updateState
-}) => {
+export const Checkbox: FC<{
+  updateState: Dispatch<boolean>
+  externalValue?: boolean
+}> = ({ updateState, externalValue }) => {
   const [checked, setChecked] = useState(false)
 
   useEffect(() => {
     updateState(checked)
   }, [checked])
 
+  useEffect(() => {
+    if (externalValue !== undefined) {
+      setChecked(externalValue)
+    }
+  }, [externalValue])
   return (
     <div
       onClick={() => {

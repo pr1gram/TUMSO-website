@@ -1,10 +1,7 @@
 import { SectionContainer } from "@/components/sections/register/SectionContainer"
-import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { RegisterProvider } from "@/contexts/RegisterContext"
 
-const Page = () => {
-  const { user } = useFirebaseAuth()
-
+const Page = ({ query }: any) => {
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
       <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
@@ -22,11 +19,15 @@ const Page = () => {
           </p>
         </div>
         <RegisterProvider>
-          <SectionContainer />
+          <SectionContainer query={query} />
         </RegisterProvider>
       </div>
     </div>
   )
+}
+
+Page.getInitialProps = async ({ query }: any) => {
+  return { query }
 }
 
 export default Page

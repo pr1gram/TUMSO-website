@@ -15,6 +15,7 @@ export const SelectionInput: FC<{
   updateState: Dispatch<string | null>
   valueValidator: (value: string | null) => boolean
   value: string | null
+  externalValue?: string
 }> = ({
   options,
   required,
@@ -22,7 +23,8 @@ export const SelectionInput: FC<{
   placeholder,
   updateState,
   valueValidator,
-  value
+  value,
+  externalValue
 }) => {
   const [selected, setSelected] = useState<string | null>(null)
   const [showall, setShowall] = useState(false)
@@ -31,6 +33,12 @@ export const SelectionInput: FC<{
     updateState(selected)
     setShowall(false)
   }, [selected])
+
+  useEffect(() => {
+    if (externalValue !== undefined) {
+      setSelected(externalValue)
+    }
+  }, [externalValue])
   return (
     <div className="shrink-0">
       {showall && (

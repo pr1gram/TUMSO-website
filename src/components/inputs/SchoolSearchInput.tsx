@@ -129,9 +129,10 @@ const possibleWatLetter = [
   "ไ"
 ]
 
-export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
-  updateState
-}) => {
+export const SchoolSearchInput: FC<{
+  updateState: Dispatch<string>
+  value?: string
+}> = ({ updateState, value }) => {
   const [items, setItems] = useState<{ id: number; name: string }[]>([])
   const [keyword, setKW] = useState("")
   const [prevFL, setPrevFL] = useState("")
@@ -142,6 +143,14 @@ export const SchoolSearchInput: FC<{ updateState: Dispatch<string> }> = ({
   useEffect(() => {
     updateState(selection)
   }, [selection])
+
+  useEffect(() => {
+    if (value) {
+      setSelection(value)
+      setReloadStr(value)
+      document.body.click()
+    }
+  }, [value])
 
   const getSchoolIndex = async (startChar: string, subDir?: string) => {
     if (startChar === prevFL) return
