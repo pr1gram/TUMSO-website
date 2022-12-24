@@ -51,6 +51,10 @@ export const SectionIndicator: FC<{ title: string; id: string }> = ({
         const d = Storage.data.selection
         return subjectValidator(translateFromEng(d.subject))
       }
+      case "document": {
+        const d = Storage.data.document
+        return d !== null && emptyStringValidator(d.filePath)
+      }
       default:
         return false
     }

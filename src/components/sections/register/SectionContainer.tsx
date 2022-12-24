@@ -7,6 +7,7 @@ import type { FC } from "react"
 import { useEffect, useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
+import { DocumentSection } from "@/components/sections/register/DocumentSection"
 import { LandingSection } from "@/components/sections/register/LandingSection"
 import { SelectionSection } from "@/components/sections/register/SelectionSection"
 import { StudentSection } from "@/components/sections/register/StudentSection"
@@ -154,7 +155,7 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
           <SectionIndicator title={"2. ข้อมูลครูที่ปรึกษา"} id={"teacher"} />
           <SectionIndicator title={"3. วิชาที่ลงสมัคร"} id={"selection"} />
           <SectionIndicator
-            title={"4. เอกสารรับรองสถานะภาพผู้เรียน"}
+            title={"4. เอกสารรับรองสถานภาพผู้เรียน"}
             id={"document"}
           />
           <div className="mt-4">
@@ -221,6 +222,14 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
         }
       >
         <SelectionSection />
+      </motion.div>
+      <motion.div
+        initial={{ display: "none" }}
+        animate={
+          section.is("document") ? { display: "block" } : { display: "none" }
+        }
+      >
+        <DocumentSection />
       </motion.div>
     </div>
   )
