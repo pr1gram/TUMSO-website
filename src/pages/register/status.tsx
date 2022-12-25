@@ -8,7 +8,7 @@ import { useFireStore } from "@/contexts/firestore"
 import { parseTimestamp } from "@/utils/time"
 
 const Page = () => {
-  const { user } = useFirebaseAuth()
+  const { user, signOut } = useFirebaseAuth()
   const { getSubmitStatus } = useFireStore()
   const [loading, setLoading] = useState(true)
   const [submissionData, setSD] = useState<{
@@ -20,7 +20,7 @@ const Page = () => {
     switch (submissionData?.status) {
       case "waiting":
         return <span className="text-yellow-600">รอการตรวจสอบ</span>
-      case "reject":
+      case "rejected":
         return <span className="text-red-500">ถูกปฏิเสธ</span>
       case "editing":
         return <span className="text-orange-500">รอการแก้ไข</span>
@@ -41,7 +41,11 @@ const Page = () => {
       }
       setLoading(false)
     }
-    if (user.uid) load()
+    if (user.uid) {
+      load()
+      return
+    }
+    Router.push("/register")
   }, [user.uid])
 
   return (
@@ -69,6 +73,12 @@ const Page = () => {
             </span>
             ก่อนเริ่มกรอกใบสมัคร
           </p>
+          <a
+            onClick={signOut}
+            className="cursor-pointer text-sm hover:underline"
+          >
+            ออกจากระบบ
+          </a>
         </div>
         <div className="my-4 flex items-center justify-center">
           <div className="max-w-[320px] rounded-md border border-gray-500 border-opacity-50 px-4 py-2">

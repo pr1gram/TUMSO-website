@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 
 import { SelectionInput } from "@/components/inputs/SelectionInput"
+import { useFireStore } from "@/contexts/firestore"
 import { useRegister } from "@/contexts/RegisterContext"
+import type { StorableObject } from "@/types/StorableObject"
 import {
   availableSelection,
   subjectValidator,
@@ -11,8 +13,27 @@ import {
 
 export const SelectionSection = () => {
   const { Storage, Updater } = useRegister()
+  const { getSubjectAvailability } = useFireStore()
 
   const [select, setSelect] = useState<string | null>(null)
+  const [avail, setAvail] = useState<StorableObject | undefined>(undefined)
+
+  useEffect(() => {
+    const load = async () => {
+      const d = await getSubjectAvailability()
+      if (!d) return
+      const constructed: { [key: string]: { text: string; c: number } } = {}
+      Object.keys(d).forEach((k) => {
+        const val = d[k]
+        constructed[k] = {
+          text: `(เหลือ ${val.max - val.count} ทีม)`,
+          c: val.max - val.count
+        }
+      })
+      setAvail(constructed)
+    }
+    load()
+  }, [])
 
   useEffect(() => {
     if (select) {
@@ -42,6 +63,7 @@ export const SelectionSection = () => {
                   ? undefined
                   : translateFromEng(Updater.receivedData?.selection.subject)
               }
+              optionComments={avail}
             />
           </div>
         </div>

@@ -3,6 +3,8 @@ import {
   doc,
   getDoc,
   getFirestore,
+  increment,
+  runTransaction,
   setDoc,
   Timestamp
 } from "@firebase/firestore"
@@ -32,15 +34,41 @@ export const useFireStore = () => {
   const submitForms = async (data: FormData) => {
     const hashedValue = hash.sha1(data)
     try {
-      await setDoc(doc(collection(db, "submitted"), user.uid), {
-        data,
-        checksum: hashedValue,
-        timestamp: Timestamp.now(),
-        status: "waiting"
+      if (!data.selection.subject) return false
+      await runTransaction(db, async (transaction) => {
+        const count = await transaction.get(
+          doc(collection(db, "count"), "subject")
+        )
+        const userSelected: { count: number; max: number } = count.get(
+          data.selection.subject as string
+        )
+
+        if (userSelected.count >= userSelected.max) return
+
+        transaction.set(doc(collection(db, "submitted"), user.uid), {
+          data,
+          checksum: hashedValue,
+          timestamp: Timestamp.now(),
+          status: "waiting"
+        })
+        transaction.update(
+          doc(collection(db, "count"), "subject"),
+          `${data.selection.subject}.count`,
+          increment(1)
+        )
       })
       return true
     } catch (_) {
       return false
+    }
+  }
+
+  const getSubjectAvailability = async () => {
+    try {
+      const count = await getDoc(doc(collection(db, "count"), "subject"))
+      return count.data()
+    } catch (e) {
+      return undefined
     }
   }
 
@@ -100,6 +128,7 @@ export const useFireStore = () => {
   const getSubmitStatus = async (): Promise<
     { status: string; timestamp: Timestamp } | undefined
   > => {
+    if (!user.uid) return undefined
     try {
       const docData = await getDoc(doc(collection(db, "submitted"), user.uid))
       if (docData.exists()) {
@@ -130,6 +159,7 @@ export const useFireStore = () => {
     },
     getDocumentLink,
     submitForms,
-    getSubmitStatus
+    getSubmitStatus,
+    getSubjectAvailability
   }
 }

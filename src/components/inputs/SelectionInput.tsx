@@ -6,6 +6,7 @@ import type { Dispatch, FC } from "react"
 import { useEffect, useState } from "react"
 
 import { ExpandableBadge } from "@/components/buttons/animated/ExpandableBadge"
+import { translateToEng } from "@/utils/fixedSelection"
 
 export const SelectionInput: FC<{
   options: string[]
@@ -16,6 +17,7 @@ export const SelectionInput: FC<{
   valueValidator: (value: string | null) => boolean
   value: string | null
   externalValue?: string | any
+  optionComments?: any
 }> = ({
   options,
   required,
@@ -24,7 +26,8 @@ export const SelectionInput: FC<{
   updateState,
   valueValidator,
   value,
-  externalValue
+  externalValue,
+  optionComments
 }) => {
   const [selected, setSelected] = useState<string | null>(null)
   const [showall, setShowall] = useState(false)
@@ -98,7 +101,16 @@ export const SelectionInput: FC<{
             return (
               <div
                 onClick={() => {
-                  setSelected(v)
+                  if (!optionComments) {
+                    setSelected(v)
+                    return
+                  }
+                  if (
+                    translateToEng(v) in optionComments &&
+                    optionComments[translateToEng(v)].c > 0
+                  ) {
+                    setSelected(v)
+                  }
                 }}
                 key={`option-${k}-${title}`}
                 className={classnames(
@@ -106,10 +118,21 @@ export const SelectionInput: FC<{
                   "border-x border-gray-400 border-opacity-100 px-4 py-1",
                   v === selected
                     ? "bg-gray-200"
-                    : "cursor-pointer hover:bg-gray-100"
+                    : "cursor-pointer hover:bg-gray-100",
+                  optionComments &&
+                    translateToEng(v) in optionComments &&
+                    optionComments[translateToEng(v)].c <= 0 &&
+                    "cursor-not-allowed hover:bg-white"
                 )}
               >
-                <h1>{v}</h1>
+                <h1>
+                  {v}
+                  {optionComments && translateToEng(v) in optionComments && (
+                    <span className="ml-2 text-xs text-gray-500">{`${
+                      optionComments[translateToEng(v)].text
+                    }`}</span>
+                  )}
+                </h1>
               </div>
             )
           })}
