@@ -1,3 +1,4 @@
+import classnames from "classnames"
 import { motion } from "framer-motion"
 import type { FC } from "react"
 import { useState } from "react"
@@ -6,11 +7,13 @@ export const IlluminateButton: FC<{
   children: any
   action: () => void
   width?: number
-}> = ({ children, action, width = 200 }) => {
+  disabled?: boolean
+}> = ({ children, action, width = 200, disabled }) => {
   const [hover, setHover] = useState(false)
   return (
     <div
       onMouseEnter={() => {
+        if (disabled) return
         setHover(true)
       }}
       onMouseLeave={() => {
@@ -18,7 +21,10 @@ export const IlluminateButton: FC<{
       }}
       onClick={action}
       style={{ width: `${width}px` }}
-      className="relative flex h-[34px] cursor-pointer items-center justify-center rounded-md border border-gray-400 font-medium text-gray-600"
+      className={classnames(
+        "relative flex h-[34px] items-center justify-center rounded-md border border-gray-400 font-medium text-gray-600",
+        !disabled ? "cursor-pointer" : "cursor-not-allowed"
+      )}
     >
       <motion.div
         initial={{ clipPath: "inset(0 100% 100% 0)" }}
