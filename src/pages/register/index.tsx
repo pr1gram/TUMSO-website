@@ -30,7 +30,7 @@ const Page = ({ query }: any) => {
           <h1 className="text-2xl font-semibold">ลงทะเบียนสมัครแข่งขัน</h1>
           <h1 className="mt-1 font-medium leading-4 text-gray-600">
             หมดเขตรับสมัคร:{" "}
-            <span className="text-gray-800">6 มกราคม 2565 เวลา 18.30 น.</span>
+            <span className="text-gray-800">8 มกราคม 2565 เวลา 18.30 น.</span>
           </h1>
           <p className="text-gray-600">
             ขอความร่วมมือผู้สมัคร

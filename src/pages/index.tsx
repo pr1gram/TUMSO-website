@@ -233,11 +233,11 @@ const Page = () => {
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">2 ชั่วโมง</span>
+                      <span className="mt-0.5">3 ชั่วโมง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 11.00</span>
+                      <span className="mt-0.5">13rd Jan 09.00 - 12.00</span>
                     </div>
                   </div>
                 </div>
