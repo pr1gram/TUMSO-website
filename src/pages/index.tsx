@@ -16,7 +16,6 @@ const Page = () => {
 
   useEffect(() => {
     scrollY.onChange((d) => {
-      console.log(d)
       setSY(d)
     })
   }, [])
@@ -41,7 +40,7 @@ const Page = () => {
           transition={{ type: "tween", delay: 0.4, duration: 0.6 }}
           className="pt-1 text-gray-600"
         >
-          Registration starts 26th December 2022
+          Registration starts 30th December 2022
         </RevealText>
         <motion.div
           initial={{ opacity: 0 }}
@@ -279,7 +278,7 @@ const Page = () => {
                 </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
-                เริ่มวันที่ 23 ธันวาคม 2565
+                เริ่มวันที่ 30 ธันวาคม 2565
               </p>
             </motion.div>
           </div>
@@ -307,7 +306,7 @@ const Page = () => {
                 </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
-                เริ่มวันที่ 23 ธันวาคม 2565
+                เริ่มวันที่ 30 ธันวาคม 2565
               </p>
             </motion.div>
             <motion.div
