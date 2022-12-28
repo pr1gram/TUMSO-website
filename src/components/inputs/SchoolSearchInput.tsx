@@ -166,10 +166,17 @@ export const SchoolSearchInput: FC<{
       })
     }
     const unpacked = await data.text()
-    const processed = unpacked.split("\n").map((i, k) => ({
-      id: k,
-      name: `โรงเรียน${subDir ? subDir + i : i}`
-    }))
+    const processed = unpacked.split("\n").map((i, k) => {
+      const spl = i.split(",")
+      const obj = {
+        id: k,
+        name: `โรงเรียน${subDir ? subDir + spl[0] : spl[0]}`,
+        address: spl[1],
+        area: spl[2]
+      }
+
+      return obj
+    })
     setItems(processed)
     setPrevFL(startChar)
     setLoading(false)
@@ -214,7 +221,7 @@ export const SchoolSearchInput: FC<{
         }}
         inputSearchString={reloadStr}
         showNoResultsText={loading ? "กำลังโหลดข้อมูล..." : "ไม่พบในฐานข้อมูล"}
-        maxResults={10}
+        maxResults={30}
         styling={{
           boxShadow: "none",
           zIndex: 29,
@@ -224,6 +231,14 @@ export const SchoolSearchInput: FC<{
           fontFamily: "inherit",
           border: "1px solid rgba(107, 114, 128, 0.6)",
           searchIconMargin: "0 0 0 26px"
+        }}
+        formatResult={(i: any) => {
+          return (
+            <div>
+              <h1>{i.name}</h1>
+              <p className="-mt-1 text-xs text-gray-500">{i.address}</p>
+            </div>
+          )
         }}
         items={items}
       />

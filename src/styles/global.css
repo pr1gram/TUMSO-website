@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer {
+    ul {
+        overflow: auto;
+        max-height: 324px;
+    }
+}
