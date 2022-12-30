@@ -82,7 +82,7 @@ export const LandingSection = () => {
                 }}
               />
             ) : (
-              <div className="rounded-md bg-gray-600 bg-opacity-40">
+            
                 <IlluminateButton
                   action={() => {
                     if (user.isLoggedIn()) {
@@ -94,7 +94,7 @@ export const LandingSection = () => {
                 >
                   <span>เริ่มกรอกฟอร์ม</span>
                 </IlluminateButton>
-              </div>
+            
             )}
           </motion.div>
         </AnimatePresence>
