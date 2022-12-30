@@ -84,13 +84,12 @@ export const LandingSection = () => {
             ) : (
               <div className="rounded-md bg-gray-600 bg-opacity-40">
                 <IlluminateButton
-                  disabled={true}
                   action={() => {
-                    // if (user.isLoggedIn()) {
-                    //   section.set("student")
-                    //   return
-                    // }
-                    // setShowLogin(true)
+                    if (user.isLoggedIn()) {
+                       section.set("student")
+                       return
+                     }
+                     setShowLogin(true)
                   }}
                 >
                   <span>เริ่มกรอกฟอร์ม</span>
