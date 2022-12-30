@@ -108,7 +108,7 @@ export const DocumentSection: FC<{ save: () => Promise<void> }> = ({
         </p>
         <div className="mt-4">
           <a
-            href="/documents/forms.pdf"
+            href="/documents/forms-latest.pdf"
             download={"หนังสือรับรองสถานภาพ.pdf"}
             target="_blank"
             className="flex cursor-pointer items-start space-x-1 hover:text-blue-600 hover:underline"
