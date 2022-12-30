@@ -332,8 +332,8 @@ const Page = () => {
             </h1>
             <div className="text-center text-gray-800 switch:text-left">
               <h1>Facbook: TUMSO 19th</h1>
-              <h1>Email: tumso19@triamudom.ac.th</h1>
-              <h1>โทร: 081-111-1111</h1>
+              <h1>Website: https://triamudom.ac.th</h1>
+              <h1>โทร: 02-252-7302</h1>
             </div>
           </motion.div>
         </div>
