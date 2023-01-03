@@ -64,6 +64,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
+                    <h1>
+                      School:{" "}
+                      <span className="font-semibold">
+                        {d.data.school.name}
+                      </span>
+                    </h1>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">
@@ -106,6 +112,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
+                    <h1>
+                      School:{" "}
+                      <span className="font-semibold">
+                        {d.data.school.name}
+                      </span>
+                    </h1>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">
@@ -146,6 +158,12 @@ const Page = () => {
                       Subject:{" "}
                       <span className="font-semibold">
                         {d.data.selection.subject}
+                      </span>
+                    </h1>
+                    <h1>
+                      School:{" "}
+                      <span className="font-semibold">
+                        {d.data.school.name}
                       </span>
                     </h1>
                     <span>
