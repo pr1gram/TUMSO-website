@@ -1,4 +1,5 @@
 import type { Timestamp } from "@firebase/firestore"
+import { ArrowLeftIcon } from "@heroicons/react/20/solid"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Router from "next/router"
@@ -6,7 +7,6 @@ import hash from "object-hash"
 import type { FC } from "react"
 import { useEffect, useState } from "react"
 
-import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { DocumentSection } from "@/components/sections/register/DocumentSection"
 import { SelectionSection } from "@/components/sections/register/SelectionSection"
 import { StudentSection } from "@/components/sections/register/StudentSection"
@@ -73,12 +73,6 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   }
 
   useEffect(() => {
-    if (user.uid !== undefined && user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1") {
-      Router.push("/register")
-    }
-  }, [user.uid])
-
-  useEffect(() => {
     if (user.isLoggedIn() === false) {
       Router.push("/register")
       return
@@ -114,22 +108,23 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
     </div>
   )
 }
+
 const Page = ({ query }: any) => {
-  const { updateStatus } = useAdminControl()
-  const updateAStatus = async (type: string) => {
-    if (!query.id) return
-    const r = await updateStatus(type, query.id)
-    if (r) {
-      Router.push("/register/admin")
-    }
-  }
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
       <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
-        <h1 className="text-xl font-bold">Forms Preview</h1>
-        <Link href="/register/admin" className="text-gray-500 hover:underline">
-          ย้อนกลับ
+        <Link
+          href="/register/status"
+          className="mb-1 flex items-center space-x-1 text-gray-500 hover:underline"
+        >
+          <ArrowLeftIcon className="h-4 w-4" />
+          <span>ย้อนกลับ</span>
         </Link>
+        <h1 className="text-2xl font-bold">ตรวจสอบแบบฟอร์ม</h1>
+        <p className="text-red-400">
+          หน้านี้มีไว้สำหรับตรวจสอบแบบฟอร์มที่ส่งไปแล้วเท่านั้น
+          ผู้สมัครไม่สามารถแก้ไขข้อมูลหลังส่งฟอร์มไปแล้วได้
+        </p>
         <div className="relative">
           <div className="absolute z-[40] h-full w-full cursor-help overflow-hidden">
             {[...Array(16)].map((e, k) => (
@@ -147,23 +142,6 @@ const Page = ({ query }: any) => {
           <RegisterProvider>
             <SectionContainer id={query.id} />
           </RegisterProvider>
-        </div>
-        <h1 className="mt-6 text-xl font-semibold">Update the status</h1>
-        <div className="mt-4 flex justify-center space-x-4">
-          <IlluminateButton
-            action={() => {
-              updateAStatus("accepted")
-            }}
-          >
-            Accept
-          </IlluminateButton>
-          <IlluminateButton
-            action={() => {
-              updateAStatus("rejected")
-            }}
-          >
-            Reject
-          </IlluminateButton>
         </div>
       </div>
     </div>

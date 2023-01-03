@@ -126,7 +126,7 @@ export const useFireStore = () => {
   }
 
   const getSubmitStatus = async (): Promise<
-    { status: string; timestamp: Timestamp } | undefined
+    { status: string; timestamp: Timestamp; id: string } | undefined
   > => {
     if (!user.uid) return undefined
     try {
@@ -134,7 +134,8 @@ export const useFireStore = () => {
       if (docData.exists()) {
         return {
           status: docData.get("status"),
-          timestamp: docData.get("timestamp")
+          timestamp: docData.get("timestamp"),
+          id: docData.id
         }
       }
       return undefined

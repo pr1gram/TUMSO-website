@@ -1,4 +1,5 @@
 import type { Timestamp } from "@firebase/firestore"
+import { EyeIcon } from "@heroicons/react/20/solid"
 import { motion } from "framer-motion"
 import Router from "next/router"
 import { useCallback, useEffect, useState } from "react"
@@ -14,6 +15,7 @@ const Page = () => {
   const [submissionData, setSD] = useState<{
     status: string
     timestamp: Timestamp
+    id: string
   } | null>(null)
 
   const showStatus = useCallback(() => {
@@ -84,11 +86,22 @@ const Page = () => {
         <div className="my-4 flex items-center justify-center">
           <div className="max-w-[320px] rounded-md border border-gray-500 border-opacity-50 px-4 py-2">
             <h1 className="mt-1 text-center">สถานะ: {showStatus()}</h1>
-            <h1 className="mb-1 text-center">
+            <h1 className="mb-1 text-center text-sm">
               ส่งเมื่อ:{" "}
               <span className="text-gray-600">
                 {parseTimestamp(submissionData?.timestamp || null)}
               </span>
+            </h1>
+            <h1
+              onClick={() => {
+                window.location.replace(
+                  `/register/review?id=${submissionData?.id}`
+                )
+              }}
+              className="flex cursor-pointer items-center justify-center space-x-1 text-center text-gray-600 hover:text-blue-600 hover:underline"
+            >
+              <EyeIcon className="h-4 w-4" />
+              <span>ตรวจสอบแบบฟอร์ม</span>
             </h1>
           </div>
         </div>
