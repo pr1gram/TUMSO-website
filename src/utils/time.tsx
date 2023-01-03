@@ -15,9 +15,9 @@ export const parseTimestamp = (timestamp: Timestamp | null) => {
     "กันยายน",
     "ตุลาคม",
     "พฤศจิกายน",
-    "ธันวาคม",
-    ""
+    "ธันวาคม"
   ]
+
   function pad(num: number | undefined) {
     if (!num) return ""
     let strNum = num.toString()
@@ -31,9 +31,9 @@ export const parseTimestamp = (timestamp: Timestamp | null) => {
     <span>
       {pad(timestamp?.toDate().getHours())}:
       {pad(timestamp?.toDate().getMinutes())}
-      {"น. "}
+      {" น. "}
       {pad(timestamp?.toDate().getDate())}{" "}
-      {month[timestamp?.toDate().getMonth() || 12]}{" "}
+      {month[timestamp?.toDate().getMonth()]}{" "}
       {timestamp?.toDate().getFullYear()}
     </span>
   )

@@ -13,16 +13,18 @@ interface FirebaseAuthContextInterface {
   signIn: (action?: () => any | Promise<any>) => void
   signOut: () => void
   user: {
-    isLoggedIn: () => boolean
+    isLoggedIn: () => boolean | null
     uid?: string
+    email?: string | null
   }
 }
 const defaultContextValue: FirebaseAuthContextInterface = {
   signIn: (_) => {},
   signOut: () => {},
   user: {
-    isLoggedIn: () => false,
-    uid: undefined
+    isLoggedIn: () => null,
+    uid: undefined,
+    email: ""
   }
 }
 
@@ -44,7 +46,7 @@ const useFBAuthAction = (): FirebaseAuthContextInterface => {
     })
   }, [])
   const isLoggedIn = () => {
-    return !!user
+    return user === null ? null : !!user
   }
 
   const signIn = (action?: () => any | Promise<any>) => {
@@ -62,7 +64,8 @@ const useFBAuthAction = (): FirebaseAuthContextInterface => {
     signOut,
     user: {
       isLoggedIn,
-      uid: user?.uid
+      uid: user?.uid,
+      email: user?.email
     }
   }
 }
