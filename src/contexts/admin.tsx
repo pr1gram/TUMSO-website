@@ -13,7 +13,13 @@ export const useAdminControl = () => {
 
   const getSubmitted = async () => {
     const dataCollection = await getDocs(submittedCol)
-    return dataCollection.docs.map((d) => ({ id: d.id, ...d.data() }))
+
+    return (
+      dataCollection.docs
+        .map((d) => ({ id: d.id, ...d.data() }))
+        // @ts-ignore
+        .sort((a, b) => a.data.school.name.localeCompare(b.data.school.name))
+    )
   }
 
   const updateStatus = async (
