@@ -95,9 +95,15 @@ const Page = () => {
             {submissionData?.status === "rejected" ? (
               <h1 className="mb-1 text-center text-sm">
                 สาเหตุ :{" "}
-                <span className="font-medium text-gray-500">
-                  {submissionData?.reason}
-                </span>
+                {submissionData?.reason === "duplicated" ? (
+                  <span className="font-medium text-yellow-600 underline">
+                    1 โรงเรียนสามารถส่งได้เพียง 1 ทีมต่อหนึ่งวิชาเท่านั้น
+                  </span>
+                ) : (
+                  <span className="font-medium text-gray-500">
+                    {submissionData?.reason}
+                  </span>
+                )}
               </h1>
             ) : (
               <h1 className="mb-1 text-center text-sm">
@@ -107,7 +113,8 @@ const Page = () => {
                 </span>
               </h1>
             )}
-            {submissionData?.status === "rejected" ? (
+            {submissionData?.status === "rejected" &&
+            submissionData?.reason !== "duplicated" ? (
               <h1
                 onClick={edit}
                 className="flex cursor-pointer items-center justify-center space-x-1 text-center text-gray-600 hover:text-blue-600 hover:underline"
