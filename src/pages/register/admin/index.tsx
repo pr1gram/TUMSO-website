@@ -172,6 +172,12 @@ const Page = () => {
                         {parseTimestamp(d.timestamp)}
                       </span>
                     </span>
+                    <h1>
+                      Reason:{" "}
+                      <span className="font-medium text-gray-500">
+                        {d.reason}
+                      </span>
+                    </h1>
                   </div>
                 )
               })}

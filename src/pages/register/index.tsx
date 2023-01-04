@@ -14,7 +14,9 @@ const Page = ({ query }: any) => {
     const check = async () => {
       const submit = await getSubmitStatus()
       if (submit) {
-        Router.push("/register/status")
+        if (submit.status !== "editing") {
+          Router.push("/register/status")
+        }
       }
     }
 

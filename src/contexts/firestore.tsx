@@ -6,7 +6,8 @@ import {
   increment,
   runTransaction,
   setDoc,
-  Timestamp
+  Timestamp,
+  updateDoc
 } from "@firebase/firestore"
 import { getDownloadURL, getStorage, ref, uploadBytes } from "@firebase/storage"
 import hash from "object-hash"
@@ -39,6 +40,9 @@ export const useFireStore = () => {
         const count = await transaction.get(
           doc(collection(db, "count"), "subject")
         )
+        const sd = await transaction.get(
+          doc(collection(db, "submitted"), user.uid)
+        )
         const userSelected: { count: number; max: number } = count.get(
           data.selection.subject as string
         )
@@ -51,11 +55,14 @@ export const useFireStore = () => {
           timestamp: Timestamp.now(),
           status: "waiting"
         })
-        transaction.update(
-          doc(collection(db, "count"), "subject"),
-          `${data.selection.subject}.count`,
-          increment(1)
-        )
+
+        if (!sd.exists() || sd.get("status") !== "editing") {
+          transaction.update(
+            doc(collection(db, "count"), "subject"),
+            `${data.selection.subject}.count`,
+            increment(1)
+          )
+        }
       })
       return true
     } catch (_) {
@@ -113,6 +120,12 @@ export const useFireStore = () => {
     }
   }
 
+  const enableEditing = async () => {
+    await updateDoc(doc(collection(db, "submitted"), user.uid), {
+      status: "editing"
+    })
+  }
+
   const getSavedData = async (): Promise<StoredDocument | null> => {
     setGSDS("pending")
     try {
@@ -126,7 +139,8 @@ export const useFireStore = () => {
   }
 
   const getSubmitStatus = async (): Promise<
-    { status: string; timestamp: Timestamp; id: string } | undefined
+    | { status: string; timestamp: Timestamp; id: string; reason?: string }
+    | undefined
   > => {
     if (!user.uid) return undefined
     try {
@@ -135,7 +149,8 @@ export const useFireStore = () => {
         return {
           status: docData.get("status"),
           timestamp: docData.get("timestamp"),
-          id: docData.id
+          id: docData.id,
+          reason: docData.get("reason")
         }
       }
       return undefined
@@ -161,6 +176,7 @@ export const useFireStore = () => {
     getDocumentLink,
     submitForms,
     getSubmitStatus,
-    getSubjectAvailability
+    getSubjectAvailability,
+    enableEditing
   }
 }

@@ -16,7 +16,34 @@ export const useAdminControl = () => {
     return dataCollection.docs.map((d) => ({ id: d.id, ...d.data() }))
   }
 
-  const updateStatus = async (status: string, docId: string) => {
+  const updateStatus = async (
+    status: string,
+    docId: string,
+    reason?: string
+  ) => {
+    if (status === "rejected") {
+      await updateDoc(doc(collection(db, "submitted"), docId), {
+        status,
+        reason
+      })
+
+      const submittedData = await getDoc(
+        doc(collection(db, "submitted"), docId)
+      )
+
+      const d = submittedData.get("data")
+      const c = submittedData.get("checksum")
+      const t = submittedData.get("timestamp")
+
+      await updateDoc(doc(collection(db, "savedForms"), docId), {
+        stored: d,
+        checksum: c,
+        timestamp: t
+      })
+
+      return true
+    }
+
     await updateDoc(doc(collection(db, "submitted"), docId), {
       status
     })

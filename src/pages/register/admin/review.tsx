@@ -7,6 +7,7 @@ import type { FC } from "react"
 import { useEffect, useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
+import { ShortTextInput } from "@/components/inputs/ShortTextInput"
 import { DocumentSection } from "@/components/sections/register/DocumentSection"
 import { SelectionSection } from "@/components/sections/register/SelectionSection"
 import { StudentSection } from "@/components/sections/register/StudentSection"
@@ -116,9 +117,10 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
 }
 const Page = ({ query }: any) => {
   const { updateStatus } = useAdminControl()
+  const [reason, setReason] = useState("")
   const updateAStatus = async (type: string) => {
     if (!query.id) return
-    const r = await updateStatus(type, query.id)
+    const r = await updateStatus(type, query.id, reason)
     if (r) {
       Router.push("/register/admin")
     }
@@ -157,13 +159,23 @@ const Page = ({ query }: any) => {
           >
             Accept
           </IlluminateButton>
-          <IlluminateButton
-            action={() => {
-              updateAStatus("rejected")
-            }}
-          >
-            Reject
-          </IlluminateButton>
+          <div className="flex flex-col space-y-2">
+            <IlluminateButton
+              action={() => {
+                updateAStatus("rejected")
+              }}
+            >
+              Reject
+            </IlluminateButton>
+            <div>
+              <ShortTextInput
+                placeholder={"Reason"}
+                valueValidator={() => true}
+                required={true}
+                updateState={setReason}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
