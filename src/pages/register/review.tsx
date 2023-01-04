@@ -127,10 +127,10 @@ const Page = ({ query }: any) => {
         </p>
         <div className="relative">
           <div className="absolute z-[40] h-full w-full cursor-help overflow-hidden">
-            {[...Array(16)].map((e, k) => (
+            {[...Array(24)].map((e, k) => (
               <h1
                 key={`eed-${k}`}
-                className="mb-24 -ml-6 rotate-[30deg] text-3xl font-bold text-gray-600 text-opacity-20"
+                className="mb-24 -ml-6 rotate-[30deg] whitespace-nowrap text-3xl font-bold text-gray-600 text-opacity-20"
               >
                 <span className={k % 2 === 0 ? "mr-16" : "mr-10"}>
                   สำหรับตรวจสอบเท่านั้น

@@ -116,6 +116,7 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   )
 }
 const Page = ({ query }: any) => {
+  const { user } = useFirebaseAuth()
   const { updateStatus } = useAdminControl()
   const [reason, setReason] = useState("")
   const updateAStatus = async (type: string) => {
@@ -125,6 +126,16 @@ const Page = ({ query }: any) => {
       Router.push("/register/admin")
     }
   }
+
+  useEffect(() => {
+    if (
+      user.uid !== undefined &&
+      user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1" &&
+      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3"
+    ) {
+      Router.push("/register")
+    }
+  }, [user.uid])
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
       <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
@@ -134,10 +145,10 @@ const Page = ({ query }: any) => {
         </Link>
         <div className="relative">
           <div className="absolute z-[40] h-full w-full cursor-help overflow-hidden">
-            {[...Array(16)].map((e, k) => (
+            {[...Array(24)].map((e, k) => (
               <h1
                 key={`eed-${k}`}
-                className="mb-24 -ml-6 rotate-[30deg] text-3xl font-bold text-gray-600 text-opacity-20"
+                className="mb-24 -ml-6 rotate-[30deg] whitespace-nowrap text-3xl font-bold text-gray-600 text-opacity-20"
               >
                 <span className={k % 2 === 0 ? "mr-16" : "mr-10"}>
                   สำหรับตรวจสอบเท่านั้น
