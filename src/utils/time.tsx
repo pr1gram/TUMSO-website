@@ -19,6 +19,7 @@ export const parseTimestamp = (timestamp: Timestamp | null) => {
   ]
 
   function pad(num: number | undefined) {
+    if (num === 0) return "00"
     if (!num) return ""
     let strNum = num.toString()
     while (strNum.length < 2) {
