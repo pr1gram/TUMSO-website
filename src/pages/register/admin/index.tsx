@@ -8,12 +8,15 @@ import { parseTimestamp } from "@/utils/time"
 
 const Page = () => {
   const { user } = useFirebaseAuth()
-  const { getSubmitted } = useAdminControl()
+  const { getSubmitted, getCount } = useAdminControl()
   const [appData, setData] = useState<DocumentData[]>([])
+  const [count, setCount] = useState<any>(undefined)
 
   const fetchData = async () => {
     const data = await getSubmitted()
     setData(data)
+    const ccount = await getCount()
+    setCount(ccount)
   }
 
   useEffect(() => {
@@ -34,9 +37,60 @@ const Page = () => {
     }
   }, [user.uid])
 
+  const displayColour = (v: number, max: number) => {
+    const percent = (v / max) * 100
+    if (percent <= 50) {
+      return <span className="text-green-600">{v}</span>
+    }
+    if (percent <= 70) {
+      return <span className="text-yellow-600">{v}</span>
+    }
+    if (percent <= 85) {
+      return <span className="text-orange-600">{v}</span>
+    }
+    return <span className="text-red-600">{v}</span>
+  }
+
   return (
     <div className="min-h-screen w-full">
-      <div className="mx-auto flex max-w-[1670px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
+      <div className="mx-auto flex max-w-[1190px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
+        <div className="mt-6 mr-4 space-y-2 px-4">
+          <h1 className="text-2xl font-semibold">
+            Summary{" "}
+            <span className="text-base font-normal text-gray-500">
+              {`- 
+              ${Object.values(count || {}).reduce(
+                (p, c: any) => p + c.count,
+                0
+              )} 
+                of
+              ${Object.values(count || {}).reduce((p, c: any) => p + c.max, 0)} 
+                applicants -`}
+            </span>
+          </h1>
+          <div className="flex max-w-[276px] flex-wrap">
+            {Object.keys(count || {})
+              .sort((a, b) =>
+                a === "mathematics" || b === "mathematics"
+                  ? 1
+                  : a.localeCompare(b)
+              )
+              .map((k) => {
+                return (
+                  <div
+                    className="mr-2 mb-2 rounded-lg border border-gray-600 px-4 py-2"
+                    key={k}
+                  >
+                    <h1 className="font-semibold">{k.toUpperCase()}</h1>
+                    <h1 className="font-medium text-gray-600">
+                      {displayColour(count[k].count, count[k].max)} of{" "}
+                      {count[k].max}
+                    </h1>
+                  </div>
+                )
+              })}
+          </div>
+        </div>
         <div className="mt-6 mr-4">
           <h1 className="mb-1 text-2xl font-semibold text-gray-600">
             Waiting{" "}
@@ -68,12 +122,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
-                    <h1>
-                      School:{" "}
-                      <span className="font-semibold">
+                    <div className="flex items-center space-x-1">
+                      <h1>School: </h1>
+                      <h1 className="max-w-[260px] overflow-x-auto whitespace-nowrap font-semibold">
                         {d.data.school.name}
-                      </span>
-                    </h1>
+                      </h1>
+                    </div>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">
@@ -116,12 +170,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
-                    <h1>
-                      School:{" "}
-                      <span className="font-semibold">
+                    <div className="flex items-center space-x-1">
+                      <h1>School: </h1>
+                      <h1 className="max-w-[260px] overflow-x-auto whitespace-nowrap font-semibold">
                         {d.data.school.name}
-                      </span>
-                    </h1>
+                      </h1>
+                    </div>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">
@@ -133,6 +187,7 @@ const Page = () => {
               })}
           </div>
         </div>
+        <div className="h-1 w-[326px]" />
         <div className="mt-6 mr-4">
           <h1 className="mb-1 text-2xl font-semibold text-red-700">
             Rejected{" "}
@@ -164,12 +219,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
-                    <h1>
-                      School:{" "}
-                      <span className="font-semibold">
+                    <div className="flex items-center space-x-1">
+                      <h1>School: </h1>
+                      <h1 className="max-w-[260px] overflow-x-auto whitespace-nowrap font-semibold">
                         {d.data.school.name}
-                      </span>
-                    </h1>
+                      </h1>
+                    </div>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">
@@ -218,12 +273,12 @@ const Page = () => {
                         {d.data.selection.subject}
                       </span>
                     </h1>
-                    <h1>
-                      School:{" "}
-                      <span className="font-semibold">
+                    <div className="flex items-center space-x-1">
+                      <h1>School: </h1>
+                      <h1 className="max-w-[260px] overflow-x-auto whitespace-nowrap font-semibold">
                         {d.data.school.name}
-                      </span>
-                    </h1>
+                      </h1>
+                    </div>
                     <span>
                       Submission date:{" "}
                       <span className="font-semibold">

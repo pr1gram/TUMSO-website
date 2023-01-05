@@ -22,6 +22,13 @@ const Page = ({ query }: any) => {
 
     if (user.uid) {
       check()
+      if (
+        user.uid !== undefined &&
+        (user.uid === "Di08jZL2aTOt31AUjX34FGZyIjv1" ||
+          user.uid === "y8zkDnTgDddHLxGbzOKyFYEIs5H3")
+      ) {
+        Router.push("/register/admin")
+      }
     }
   }, [user.uid])
 

@@ -22,6 +22,11 @@ export const useAdminControl = () => {
     )
   }
 
+  const getCount = async () => {
+    const count = await getDoc(doc(collection(db, "count"), "subject"))
+
+    return count.data()
+  }
   const updateStatus = async (
     status: string,
     docId: string,
@@ -70,6 +75,7 @@ export const useAdminControl = () => {
   return {
     getSubmitted,
     loadFormData,
-    updateStatus
+    updateStatus,
+    getCount
   }
 }
