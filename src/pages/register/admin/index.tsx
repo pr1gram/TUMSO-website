@@ -1,4 +1,9 @@
 import type { DocumentData } from "@firebase/firestore"
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+  MinusSmallIcon
+} from "@heroicons/react/20/solid"
 import Router from "next/router"
 import { useEffect, useState } from "react"
 
@@ -11,9 +16,60 @@ const Page = () => {
   const { getSubmitted, getCount } = useAdminControl()
   const [appData, setData] = useState<DocumentData[]>([])
   const [count, setCount] = useState<any>(undefined)
+  const [dupedIndex, setDupedIndex] = useState<string[]>([])
+  const [indexBySchool, setIndexBySchool] = useState<any>(null)
+
+  const indexByKey = (samples: any[], collector: (s: any) => string) => {
+    const indexedByKey: { [key: string]: any[] } = {}
+    samples.forEach((s) => {
+      const vok = collector(s)
+      if (vok in indexedByKey) {
+        indexedByKey[vok]?.push(s)
+      } else {
+        indexedByKey[vok] = [s]
+      }
+    })
+
+    return indexedByKey
+  }
+
+  const analyseData = (
+    samples: DocumentData[],
+    primaryKey: (s: any) => string,
+    secondaryKey: (s: any) => string,
+    priorityComparator: (a: DocumentData, b: DocumentData) => number,
+    collector: (d: DocumentData) => any = (d) => d.id
+  ): [d: any[], i: { [key: string]: any }] => {
+    const indexedByPrimary = indexByKey(samples, primaryKey)
+    const dupedList: any[] = []
+    Object.entries(indexedByPrimary).forEach(([key, val]) => {
+      const indexedBySecondary = indexByKey(val, secondaryKey)
+      const susList = Object.values(indexedBySecondary).filter(
+        (v) => v.length > 1
+      )
+      susList.forEach((sus) => {
+        const duplicates = sus.sort(priorityComparator).slice(1, sus.length)
+        duplicates.forEach((d) => {
+          dupedList.push(collector(d))
+        })
+      })
+    })
+
+    return [dupedList, indexedByPrimary]
+  }
 
   const fetchData = async () => {
     const data = await getSubmitted()
+    const [duped, indexedBySchool] = analyseData(
+      data,
+      (a) => a.data.school.name,
+      (a) => a.data.selection.subject,
+      (a, b) => {
+        return a.timestamp.seconds - b.timestamp.seconds
+      }
+    )
+    setIndexBySchool(indexedBySchool)
+    setDupedIndex(duped)
     setData(data)
     const ccount = await getCount()
     setCount(ccount)
@@ -53,7 +109,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="mx-auto flex max-w-[1190px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
+      <div className="mx-auto flex max-w-[1260px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
         <div className="mt-6 mr-4 space-y-2 px-4">
           <h1 className="text-2xl font-semibold">
             Summary{" "}
@@ -68,6 +124,7 @@ const Page = () => {
                 applicants -`}
             </span>
           </h1>
+          <h2 className="font-medium text-gray-500">By Subjects</h2>
           <div className="flex max-w-[276px] flex-wrap">
             {Object.keys(count || {})
               .sort((a, b) =>
@@ -90,6 +147,134 @@ const Page = () => {
                 )
               })}
           </div>
+          <h2 className="font-medium text-gray-500">By Schools</h2>
+          <div className="flex h-[80px] items-end text-xs font-semibold">
+            <h1 className="ml-[2px] mr-[11px] w-[10px] -rotate-90">PHYSICS</h1>
+            <h1 className="mr-[10px] w-[10px] -rotate-90">CHEMISTRY</h1>
+            <h1 className="mr-[10px] w-[10px] -rotate-90">BIOLOGY</h1>
+            <h1 className="mr-[10px] w-[10px] -rotate-90">MATHS</h1>
+            <h1 className="w-[10px] -rotate-90">COMPUTER</h1>
+            <h1 className="w-full text-center text-base font-medium">
+              School name
+            </h1>
+          </div>
+          <div className="max-h-[216px] overflow-y-auto border-t border-gray-400">
+            {Object.entries(indexBySchool || {}).map(([key, val], i) => {
+              if (key === "") return <></>
+              return (
+                <div
+                  className="flex items-center border-b border-gray-400 py-1"
+                  key={`s-${i}`}
+                >
+                  <div className="mr-2 flex space-x-1">
+                    <h1>
+                      {
+                        // @ts-ignore
+                        val?.some(
+                          (s: any) => s.data.selection.subject === "physics"
+                        ) ? (
+                          <CheckIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-green-500"
+                          />
+                        ) : (
+                          <MinusSmallIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-gray-500"
+                          />
+                        )
+                      }
+                    </h1>
+                    <h1>
+                      {
+                        // @ts-ignore
+                        val?.some(
+                          (s: any) => s.data.selection.subject === "chemistry"
+                        ) ? (
+                          <CheckIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-green-500"
+                          />
+                        ) : (
+                          <MinusSmallIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-gray-500"
+                          />
+                        )
+                      }
+                    </h1>
+                    <h1>
+                      {
+                        // @ts-ignore
+                        val?.some(
+                          (s: any) => s.data.selection.subject === "biology"
+                        ) ? (
+                          <CheckIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-green-500"
+                          />
+                        ) : (
+                          <MinusSmallIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-gray-500"
+                          />
+                        )
+                      }
+                    </h1>
+                    <h1>
+                      {
+                        // @ts-ignore
+                        val?.some(
+                          (s: any) => s.data.selection.subject === "mathematics"
+                        ) ? (
+                          <CheckIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-green-500"
+                          />
+                        ) : (
+                          <MinusSmallIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-gray-500"
+                          />
+                        )
+                      }
+                    </h1>
+                    <h1>
+                      {
+                        // @ts-ignore
+                        val?.some(
+                          (s: any) => s.data.selection.subject === "computer"
+                        ) ? (
+                          <CheckIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-green-500"
+                          />
+                        ) : (
+                          <MinusSmallIcon
+                            stroke={"currentColor"}
+                            strokeWidth={2.4}
+                            className="h-4 w-4 text-gray-500"
+                          />
+                        )
+                      }
+                    </h1>
+                  </div>
+                  <h1 className="max-w-[250px] overflow-x-scroll whitespace-nowrap">
+                    {key}
+                  </h1>
+                </div>
+              )
+            })}
+          </div>
         </div>
         <div className="mt-6 mr-4">
           <h1 className="mb-1 text-2xl font-semibold text-gray-600">
@@ -111,8 +296,13 @@ const Page = () => {
                         `/register/admin/review?id=${d.id}`
                       )
                     }}
-                    className="flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
+                    className="relative flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
                   >
+                    {dupedIndex.includes(d.id) && (
+                      <div className="absolute top-3 right-3">
+                        <ExclamationTriangleIcon className="h-4 w-4 animate-pulse text-yellow-600" />
+                      </div>
+                    )}
                     <span className="text-sm text-gray-400">
                       App id: {d.id}
                     </span>
@@ -187,7 +377,6 @@ const Page = () => {
               })}
           </div>
         </div>
-        <div className="h-1 w-[326px]" />
         <div className="mt-6 mr-4">
           <h1 className="mb-1 text-2xl font-semibold text-red-700">
             Rejected{" "}
@@ -208,8 +397,13 @@ const Page = () => {
                         `/register/admin/review?id=${d.id}`
                       )
                     }}
-                    className="flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
+                    className="relative flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
                   >
+                    {dupedIndex.includes(d.id) && (
+                      <div className="absolute top-3 right-3">
+                        <ExclamationTriangleIcon className="h-4 w-4 animate-pulse text-yellow-600" />
+                      </div>
+                    )}
                     <span className="text-sm text-gray-400">
                       App id: {d.id}
                     </span>
