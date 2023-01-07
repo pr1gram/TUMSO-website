@@ -140,11 +140,25 @@ const Page = () => {
     return <span className="text-red-600">{v}</span>
   }
 
+  const getDuped = (data: any, subject: string) => {
+    const target = data.filter((s: any) => s.data.selection.subject === subject)
+    if (target.length > 1) {
+      return (
+        <span className="absolute top-0 -right-1 z-20 text-[10px] text-yellow-600">
+          *
+        </span>
+      )
+    }
+    return <></>
+  }
+
   const getIndicator = (data: any, subject: string) => {
     if (data.some((s: any) => s.data.selection.subject === subject)) {
-      const stat = data.filter(
+      const target = data.filter(
         (s: any) => s.data.selection.subject === subject
-      )[0].status
+      )[0]
+      const stat = target.status
+      const { id } = target
 
       switch (stat) {
         case "accepted":
@@ -152,15 +166,39 @@ const Page = () => {
             <CheckIcon
               stroke={"currentColor"}
               strokeWidth={2.4}
+              onClick={() => {
+                Router.push(`/register/admin/review?id=${id}`)
+              }}
               className="h-4 w-4 text-green-500"
             />
           )
         case "rejected":
-          return <ExclamationTriangleIcon className="h-4 w-4 text-red-500" />
+          return (
+            <ExclamationTriangleIcon
+              onClick={() => {
+                Router.push(`/register/admin/review?id=${id}`)
+              }}
+              className="h-4 w-4 text-red-500"
+            />
+          )
         case "waiting":
-          return <ClockIcon className="h-4 w-4 text-gray-600" />
+          return (
+            <ClockIcon
+              onClick={() => {
+                Router.push(`/register/admin/review?id=${id}`)
+              }}
+              className="h-4 w-4 text-gray-600"
+            />
+          )
         case "editing":
-          return <PencilIcon className="h-4 w-4 text-yellow-600" />
+          return (
+            <PencilIcon
+              onClick={() => {
+                Router.push(`/register/admin/review?id=${id}`)
+              }}
+              className="h-4 w-4 text-yellow-600"
+            />
+          )
         default:
           return (
             <MinusSmallIcon
@@ -258,11 +296,26 @@ const Page = () => {
                       key={`s-${i}`}
                     >
                       <div className="mr-2 flex space-x-1">
-                        <h1>{getIndicator(val, "physics")}</h1>
-                        <h1>{getIndicator(val, "chemistry")}</h1>
-                        <h1>{getIndicator(val, "biology")}</h1>
-                        <h1>{getIndicator(val, "mathematics")}</h1>
-                        <h1>{getIndicator(val, "computer")}</h1>
+                        <h1 className="relative">
+                          {getIndicator(val, "physics")}
+                          {getDuped(val, "physics")}
+                        </h1>
+                        <h1 className="relative">
+                          {getIndicator(val, "chemistry")}{" "}
+                          {getDuped(val, "chemistry")}
+                        </h1>
+                        <h1 className="relative">
+                          {getIndicator(val, "biology")}{" "}
+                          {getDuped(val, "biology")}
+                        </h1>
+                        <h1 className="relative">
+                          {getIndicator(val, "mathematics")}{" "}
+                          {getDuped(val, "mathematics")}
+                        </h1>
+                        <h1 className="relative">
+                          {getIndicator(val, "computer")}{" "}
+                          {getDuped(val, "computer")}
+                        </h1>
                       </div>
                       <h1 className="max-w-[250px] overflow-x-scroll whitespace-nowrap">
                         {key}
@@ -354,8 +407,13 @@ const Page = () => {
                         `/register/admin/review?id=${d.id}`
                       )
                     }}
-                    className="flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
+                    className="relative flex cursor-pointer flex-col rounded-md border border-gray-400 py-2 px-6 text-gray-700"
                   >
+                    {dupedIndex.includes(d.id) && (
+                      <div className="absolute top-3 right-3">
+                        <ExclamationTriangleIcon className="h-4 w-4 animate-pulse text-yellow-600" />
+                      </div>
+                    )}
                     <span className="text-sm text-gray-400">
                       App id: {d.id}
                     </span>
