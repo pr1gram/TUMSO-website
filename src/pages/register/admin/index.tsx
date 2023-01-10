@@ -8,9 +8,11 @@ import {
 } from "@heroicons/react/20/solid"
 import Router from "next/router"
 import { useEffect, useState } from "react"
+import * as XLSX from "xlsx"
 
 import { useAdminControl } from "@/contexts/admin"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
+import { translateFromEng } from "@/utils/fixedSelection"
 import { parseTimestamp } from "@/utils/time"
 
 const Page = () => {
@@ -94,6 +96,89 @@ const Page = () => {
     )
     const ccount = await getCount()
     setCount(ccount)
+  }
+
+  function downloadBlob(
+    content: string,
+    filename: string,
+    contentType: string
+  ) {
+    const arrayOfArrayCsv = content.split("\n").map((row: string) => {
+      return row.split(",")
+    })
+    const wb = XLSX.utils.book_new()
+    const newWs = XLSX.utils.aoa_to_sheet(arrayOfArrayCsv)
+    newWs["!merges"] = [
+      { s: { r: 0, c: 0 }, e: { r: 1, c: 0 } },
+      { s: { r: 0, c: 1 }, e: { r: 1, c: 1 } },
+      { s: { r: 0, c: 2 }, e: { r: 1, c: 2 } },
+      { s: { r: 0, c: 3 }, e: { r: 0, c: 6 } },
+      { s: { r: 0, c: 7 }, e: { r: 0, c: 10 } },
+      { s: { r: 0, c: 11 }, e: { r: 0, c: 14 } }
+    ]
+    XLSX.utils.book_append_sheet(wb, newWs)
+    const blob = new Blob(
+      [new Uint8Array(XLSX.write(wb, { bookType: "xlsx", type: "array" }))],
+      {
+        type: contentType
+      }
+    )
+    const url = URL.createObjectURL(blob)
+
+    // Create a link to download it
+    const pom = document.createElement("a")
+    pom.href = url
+    pom.setAttribute("download", filename)
+    pom.click()
+  }
+
+  const exportData = () => {
+    if (fr) {
+      const counter = {
+        mathematics: 1,
+        chemistry: 1,
+        biology: 1,
+        computer: 1,
+        physics: 1
+      }
+
+      const formatted = appData
+        .filter((e) => e.status === "accepted")
+        .sort((a, b) =>
+          a.data.selection.subject.localeCompare(b.data.selection.subject)
+        )
+        .map((v) => {
+          // @ts-ignore
+          const c = counter[v.data.selection.subject]
+          // @ts-ignore
+          counter[v.data.selection.subject] += 1
+          return {
+            index: c,
+            school: v.data.school.name,
+            subject: translateFromEng(v.data.selection.subject),
+            s1t: `${v.data.students[1].title}`,
+            s1f: `${v.data.students[1].firstname}`,
+            s1l: `${v.data.students[1].lastname}`,
+            s1p: v.data.students[1].phone,
+            s2t: `${v.data.students[2].title}`,
+            s2f: `${v.data.students[2].firstname}`,
+            s2l: `${v.data.students[2].lastname}`,
+            s2p: v.data.students[2].phone,
+            teachert: v.data.teacher.title,
+            teacherf: v.data.teacher.firstname,
+            teacherl: v.data.teacher.lastname,
+            phone: v.data.teacher.phone
+          }
+        })
+
+      const header =
+        "ลำดับที่, โรงเรียน, วิชาที่ลงสมัคร, นักเรียนคนที่ 1, , , , นักเรียนคนที่ 2, , , , ครูที่ปรึกษา, , , \n , , , คำนำหน้า, ชื่อ, นามสกุล, เบอร์โทร, คำนำหน้า, ชื่อ, นามสกุล, เบอร์โทร, คำนำหน้า, ชื่อ, นามสกุล, เบอร์โทร"
+      const csvContent = `${header}\n${formatted
+        .map((e) => Object.values(e).join(", "))
+        .join("\n")}`
+
+      downloadBlob(csvContent, "export.xlsx", "text/csv;charset=utf-8;")
+    }
   }
 
   useEffect(() => {
@@ -259,7 +344,15 @@ const Page = () => {
                 )
               })}
           </div>
-          <h2 className="font-medium text-gray-500">By Schools </h2>
+          <div className="flex justify-between font-medium text-gray-500">
+            <h1>By Schools </h1>
+            <span
+              className="cursor-pointer font-normal hover:underline"
+              onClick={exportData}
+            >
+              Export
+            </span>
+          </div>
           <div className="relative">
             {!fr && (
               <div className="absolute top-0 left-0 z-[20] flex h-full w-full items-center justify-center rounded-md bg-gray-900 bg-opacity-25 backdrop-blur-sm">
