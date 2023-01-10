@@ -221,7 +221,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen w-full">
-      <div className="mx-auto flex max-w-[1260px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
+      <div className="mx-auto flex max-w-[1270px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
         <div className="mt-6 mr-4 space-y-2 px-4">
           <h1 className="text-2xl font-semibold">
             Summary{" "}

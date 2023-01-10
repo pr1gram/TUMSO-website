@@ -47,7 +47,7 @@ export const LandingSection = () => {
               <span className="text-red-400 underline">
                 อัพโหลดขึ้นสู่ระบบพร้อมกับส่งแบบฟอร์ม
               </span>{" "}
-              ภายในวันที่ 8 มกราคม 2565 เวลา 18.30 น.
+              ภายในวันที่ 11 มกราคม 2565 เวลา 12.00 น.
             </li>
             <li>
               ผู้สมัครสามารถบันทึกข้อมูลแบบฟอร์มไว้ส่งในภายหลังได้
@@ -82,19 +82,17 @@ export const LandingSection = () => {
                 }}
               />
             ) : (
-            
-                <IlluminateButton
-                  action={() => {
-                    if (user.isLoggedIn()) {
-                       section.set("student")
-                       return
-                     }
-                     setShowLogin(true)
-                  }}
-                >
-                  <span>เริ่มกรอกฟอร์ม</span>
-                </IlluminateButton>
-            
+              <IlluminateButton
+                action={() => {
+                  if (user.isLoggedIn()) {
+                    section.set("student")
+                    return
+                  }
+                  setShowLogin(true)
+                }}
+              >
+                <span>เริ่มกรอกฟอร์ม</span>
+              </IlluminateButton>
             )}
           </motion.div>
         </AnimatePresence>
