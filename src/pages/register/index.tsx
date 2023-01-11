@@ -1,5 +1,5 @@
 import Router from "next/router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { SectionContainer } from "@/components/sections/register/SectionContainer"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
@@ -9,14 +9,20 @@ import { RegisterProvider } from "@/contexts/RegisterContext"
 const Page = ({ query }: any) => {
   const { user } = useFirebaseAuth()
   const { getSubmitStatus } = useFireStore()
+  const [byPass, setBypass] = useState<boolean | undefined>(undefined)
 
   useEffect(() => {
     const check = async () => {
       const submit = await getSubmitStatus()
       if (submit) {
         if (submit.status !== "editing") {
+          setBypass(false)
           Router.push("/register/status")
+        } else {
+          setBypass(true)
         }
+      } else {
+        setBypass(false)
       }
     }
 
@@ -50,7 +56,7 @@ const Page = ({ query }: any) => {
           </p>
         </div>
         <RegisterProvider>
-          <SectionContainer query={query} />
+          <SectionContainer query={query} byPass={byPass} />
         </RegisterProvider>
       </div>
     </div>

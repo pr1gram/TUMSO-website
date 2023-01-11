@@ -1,13 +1,17 @@
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion"
 import Router from "next/router"
+import type { FC } from "react"
 import { useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { SignInWithGoogle } from "@/components/buttons/animated/SignInWithGoogle"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useRegister } from "@/contexts/RegisterContext"
+import { isClosed } from "@/utils/timer"
 
-export const LandingSection = () => {
+export const LandingSection: FC<{ byPass: boolean | undefined }> = ({
+  byPass
+}) => {
   const { section } = useRegister()
   const [showLogIn, setShowLogin] = useState(false)
   const { user } = useFirebaseAuth()
@@ -85,6 +89,7 @@ export const LandingSection = () => {
               <IlluminateButton
                 action={() => {
                   if (user.isLoggedIn()) {
+                    if (isClosed(byPass)) return
                     section.set("student")
                     return
                   }

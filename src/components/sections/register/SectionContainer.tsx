@@ -18,8 +18,12 @@ import { useFireStore } from "@/contexts/firestore"
 import { useRegister } from "@/contexts/RegisterContext"
 import type { FormData } from "@/types/FormData"
 import { parseTimestamp } from "@/utils/time"
+import { isClosed } from "@/utils/timer"
 
-export const SectionContainer: FC<{ query: any }> = ({ query }) => {
+export const SectionContainer: FC<{
+  query: any
+  byPass: boolean | undefined
+}> = ({ query, byPass }) => {
   const { section, Storage, Updater } = useRegister()
   const { signOut, user } = useFirebaseAuth()
   const { saveStorable, getSavedStorable } = useFireStore()
@@ -76,6 +80,7 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
       section.set("landing")
     } else if (Object.hasOwn(query, "filling")) {
       if (section.is("landing")) {
+        if (isClosed(byPass)) return
         section.set("student")
       }
     }
@@ -97,6 +102,15 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
       getData()
     }
   }, [user])
+
+  useEffect(() => {
+    const closed = isClosed(byPass)
+    if (!section.is("landing")) {
+      if (closed) {
+        section.set("landing")
+      }
+    }
+  }, [section])
 
   return (
     <div>
@@ -162,7 +176,7 @@ export const SectionContainer: FC<{ query: any }> = ({ query }) => {
           </div>
         </div>
       )}
-      {section.is("landing") && <LandingSection />}
+      {section.is("landing") && <LandingSection byPass={byPass} />}
       <motion.div
         initial={{ display: "none" }}
         animate={
