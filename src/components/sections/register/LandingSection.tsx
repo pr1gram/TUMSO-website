@@ -14,7 +14,7 @@ export const LandingSection: FC<{ byPass: boolean | undefined }> = ({
 }) => {
   const { section } = useRegister()
   const [showLogIn, setShowLogin] = useState(false)
-  const { user } = useFirebaseAuth()
+  const { user, signOut } = useFirebaseAuth()
   return (
     <>
       <div className="mt-8 mb-10">
@@ -74,6 +74,7 @@ export const LandingSection: FC<{ byPass: boolean | undefined }> = ({
             layout={"position"}
             className="flex justify-center"
           >
+            {/* eslint-disable-next-line no-nested-ternary */}
             {showLogIn ? (
               <SignInWithGoogle
                 successAction={() => {
@@ -85,6 +86,23 @@ export const LandingSection: FC<{ byPass: boolean | undefined }> = ({
                   section.set("student")
                 }}
               />
+            ) : user.isLoggedIn() ? (
+              <div className="flex flex-col items-center">
+                <p className="mb-2 max-w-[400px] text-center text-sm text-red-400">
+                  ขณะนี้ระบบได้ปิดรับผู้สมัครแล้ว
+                  หากต้องการตรวจสอบสถานะของใบสมัครที่ส่งไปแล้ว
+                  <span className="font-medium">
+                    ให้เข้าสู่ระบบใหม่ด้วยอีเมลที่เคยใช้ในการสมัคร
+                  </span>
+                </p>
+                <IlluminateButton
+                  action={() => {
+                    signOut()
+                  }}
+                >
+                  <span>ออกจากระบบ</span>
+                </IlluminateButton>
+              </div>
             ) : (
               <IlluminateButton
                 action={() => {
