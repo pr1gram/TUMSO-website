@@ -139,7 +139,13 @@ export const useFireStore = () => {
   }
 
   const getSubmitStatus = async (): Promise<
-    | { status: string; timestamp: Timestamp; id: string; reason?: string }
+    | {
+        status: string
+        timestamp: Timestamp
+        id: string
+        reason?: string
+        ticketData: any
+      }
     | undefined
   > => {
     if (!user.uid) return undefined
@@ -150,7 +156,21 @@ export const useFireStore = () => {
           status: docData.get("status"),
           timestamp: docData.get("timestamp"),
           id: docData.id,
-          reason: docData.get("reason")
+          reason: docData.get("reason"),
+          ticketData: {
+            fs: {
+              firstname: docData.get("data").students[1].firstname,
+              lastname: docData.get("data").students[1].lastname
+            },
+            ss: {
+              firstname: docData.get("data").students[2].firstname,
+              lastname: docData.get("data").students[2].lastname
+            },
+            teacher: {
+              firstname: docData.get("data").teacher.firstname,
+              lastname: docData.get("data").teacher.lastname
+            }
+          }
         }
       }
       return undefined
