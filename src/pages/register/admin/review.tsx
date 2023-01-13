@@ -74,7 +74,9 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   }
 
   useEffect(() => {
-    if (user.uid !== undefined && user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1") {
+    if (user.uid !== undefined &&
+      user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1" &&
+      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3") {
       Router.push("/register")
     }
   }, [user.uid])
