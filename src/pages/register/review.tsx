@@ -15,7 +15,7 @@ import { useAdminControl } from "@/contexts/admin"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useFireStore } from "@/contexts/firestore"
 import { RegisterProvider, useRegister } from "@/contexts/RegisterContext"
-import type { FormData } from "@/types/FormData"
+import type { FormData } from "@/types/register/form/FormData"
 
 export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   const { section, Storage, Updater } = useRegister()

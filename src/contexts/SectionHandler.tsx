@@ -1,7 +1,7 @@
 import { useState } from "react"
 
-import type { AvailableSections } from "@/types/AvailableSections"
-import type { SectionHandler } from "@/types/SectionHandler"
+import type { AvailableSections } from "@/types/section/AvailableSections"
+import type { SectionHandler } from "@/types/section/SectionHandler"
 
 export const useSectionHandler = (): SectionHandler => {
   const [section, setSection] = useState<AvailableSections>("landing")

@@ -1,47 +1,37 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { SelectionInput } from "@/components/inputs/SelectionInput"
 import { useFireStore } from "@/contexts/firestore"
 import { useRegister } from "@/contexts/RegisterContext"
-import type { StorableObject } from "@/types/StorableObject"
+import { loadAvailableSeatsFactory } from "@/factories/fetchers/selectionSection/loadAvailableSeatsFactory"
+import { useTranslationLayerEffect } from "@/hooks/groups/selectionSection/useTranslationLayerEffect"
+import { useFetcher } from "@/hooks/useFetcher"
+import type { StorableObject } from "@/types/storage/StorableObject"
 import {
   availableSelection,
   subjectValidator,
-  translateFromEng,
-  translateToEng
+  translateFromEng
 } from "@/utils/fixedSelection"
 
 export const SelectionSection = () => {
+  // Contexts
   const { Storage, Updater } = useRegister()
   const { getSubjectAvailability } = useFireStore()
 
+  // States
   const [select, setSelect] = useState<string | null>(null)
-  const [avail, setAvail] = useState<StorableObject | undefined>(undefined)
+  const [availability, setAvailability] = useState<StorableObject | undefined>(
+    undefined
+  )
 
-  useEffect(() => {
-    const load = async () => {
-      const d = await getSubjectAvailability()
-      if (!d) return
-      const constructed: { [key: string]: { text: string; c: number } } = {}
-      Object.keys(d).forEach((k) => {
-        const val = d[k]
-        constructed[k] = {
-          text: `(เหลือ ${val.max - val.count} ทีม)`,
-          c: val.max - val.count
-        }
-      })
-      setAvail(constructed)
-    }
-    load()
-  }, [])
+  // Effects
+  const loadAvailability = loadAvailableSeatsFactory(
+    getSubjectAvailability,
+    setAvailability
+  )
 
-  useEffect(() => {
-    if (select) {
-      Storage.updateSection("selection", {
-        subject: translateToEng(select)
-      })
-    }
-  }, [select])
+  useFetcher(loadAvailability)
+  useTranslationLayerEffect(select, Storage)
 
   return (
     <div>
@@ -63,7 +53,7 @@ export const SelectionSection = () => {
                   ? undefined
                   : translateFromEng(Updater.receivedData?.selection.subject)
               }
-              optionComments={avail}
+              optionComments={availability}
             />
           </div>
         </div>

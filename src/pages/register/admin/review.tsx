@@ -16,7 +16,7 @@ import { useAdminControl } from "@/contexts/admin"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useFireStore } from "@/contexts/firestore"
 import { RegisterProvider, useRegister } from "@/contexts/RegisterContext"
-import type { FormData } from "@/types/FormData"
+import type { FormData } from "@/types/register/form/FormData"
 
 export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   const { section, Storage, Updater } = useRegister()
@@ -74,9 +74,11 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
   }
 
   useEffect(() => {
-    if (user.uid !== undefined &&
+    if (
+      user.uid !== undefined &&
       user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1" &&
-      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3") {
+      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3"
+    ) {
       Router.push("/register")
     }
   }, [user.uid])

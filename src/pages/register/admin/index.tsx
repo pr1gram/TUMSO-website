@@ -16,7 +16,7 @@ import { translateFromEng } from "@/utils/fixedSelection"
 import { parseTimestamp } from "@/utils/time"
 
 const Page = () => {
-  const { user } = useFirebaseAuth()
+  const { user, signOut } = useFirebaseAuth()
   const { getSubmitted, getCount, getAdditional } = useAdminControl()
   const [appData, setData] = useState<DocumentData[]>([])
   const [count, setCount] = useState<any>(undefined)
@@ -308,10 +308,11 @@ const Page = () => {
     <div className="min-h-screen w-full">
       <div className="mx-auto flex max-w-[1270px] flex-wrap justify-center p-6 text-gray-800 sm:justify-start">
         <div className="mt-6 mr-4 space-y-2 px-4">
-          <h1 className="text-2xl font-semibold">
-            Summary{" "}
-            <span className="text-base font-normal text-gray-500">
-              {`- 
+          <div>
+            <h1 className="text-2xl font-semibold">
+              Summary{" "}
+              <span className="text-base font-normal text-gray-500">
+                {`- 
               ${Object.values(count || {}).reduce(
                 (p, c: any) => p + c.count,
                 0
@@ -319,8 +320,18 @@ const Page = () => {
                 of
               ${Object.values(count || {}).reduce((p, c: any) => p + c.max, 0)} 
                 applicants -`}
-            </span>
-          </h1>
+              </span>
+            </h1>
+            <h1
+              onClick={() => {
+                signOut()
+                Router.reload()
+              }}
+              className="-mt-2 cursor-pointer text-gray-500 hover:underline"
+            >
+              sign out
+            </h1>
+          </div>
           <h2 className="font-medium text-gray-500">By Subjects</h2>
           <div className="flex max-w-[276px] flex-wrap">
             {Object.keys(count || {})

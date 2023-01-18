@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
 import { useRegister } from "@/contexts/RegisterContext"
-import type { TeacherInputGroupData } from "@/types/TeacherInputGroupData"
+import type { TeacherInputGroupData } from "@/types/register/form/TeacherInputGroupData"
 import {
   emailValidator,
   emptyStringValidator,

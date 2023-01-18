@@ -1,60 +1,26 @@
-import Router from "next/router"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { SectionContainer } from "@/components/sections/register/SectionContainer"
-import { useFirebaseAuth } from "@/contexts/firebaseAuth"
+import { FormsHeading } from "@/components/texts/static/group/FormsHeading"
 import { useFireStore } from "@/contexts/firestore"
 import { RegisterProvider } from "@/contexts/RegisterContext"
+import { checkSubmitStatusFactory } from "@/factories/fetchers/checkSubmitStatusFactory"
+import { useAdminRedirect } from "@/hooks/groups/register/useAdminRedirect"
+import { useFetcher } from "@/hooks/useFetcher"
 
 const Page = ({ query }: any) => {
-  const { user } = useFirebaseAuth()
   const { getSubmitStatus } = useFireStore()
   const [byPass, setBypass] = useState<boolean | undefined>(undefined)
 
-  useEffect(() => {
-    const check = async () => {
-      const submit = await getSubmitStatus()
-      if (submit) {
-        if (submit.status !== "editing") {
-          setBypass(false)
-          Router.push("/register/status")
-        } else {
-          setBypass(true)
-        }
-      } else {
-        setBypass(false)
-      }
-    }
+  const checkSubmitStatus = checkSubmitStatusFactory(getSubmitStatus, setBypass)
+  useFetcher(checkSubmitStatus, true)
 
-    if (user.uid) {
-      check()
-      if (
-        user.uid !== undefined &&
-        (user.uid === "Di08jZL2aTOt31AUjX34FGZyIjv1" ||
-          user.uid === "y8zkDnTgDddHLxGbzOKyFYEIs5H3")
-      ) {
-        Router.push("/register/admin")
-      }
-    }
-  }, [user.uid])
+  useAdminRedirect()
 
   return (
     <div className="font-noto-sans-thai py-16 text-gray-900">
       <div className="mx-auto flex w-full max-w-lg flex-col px-6 sm:max-w-2xl">
-        <div>
-          <h1 className="text-2xl font-semibold">ลงทะเบียนสมัครแข่งขัน</h1>
-          <h1 className="mt-1 font-medium leading-4 text-gray-600">
-            หมดเขตรับสมัคร:{" "}
-            <span className="text-red-600">11 มกราคม 2565 เวลา 12.00 น.</span>
-          </h1>
-          <p className="text-gray-600">
-            ขอความร่วมมือผู้สมัคร
-            <span className="font-medium text-red-400">
-              อ่านคำแนะนำก่อนเริ่มการสมัครอย่างละเอียด
-            </span>
-            ก่อนเริ่มกรอกใบสมัคร
-          </p>
-        </div>
+        <FormsHeading />
         <RegisterProvider>
           <SectionContainer query={query} byPass={byPass} />
         </RegisterProvider>

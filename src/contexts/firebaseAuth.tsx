@@ -9,15 +9,18 @@ import {
 import type { FC } from "react"
 import { createContext, useContext, useEffect, useState } from "react"
 
+export interface IUser {
+  isLoggedIn: () => boolean | null
+  uid?: string
+  email?: string | null
+}
+
 interface FirebaseAuthContextInterface {
   signIn: (action?: () => any | Promise<any>) => void
   signOut: () => void
-  user: {
-    isLoggedIn: () => boolean | null
-    uid?: string
-    email?: string | null
-  }
+  user: IUser
 }
+
 const defaultContextValue: FirebaseAuthContextInterface = {
   signIn: (_) => {},
   signOut: () => {},

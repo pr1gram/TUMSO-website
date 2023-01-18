@@ -5,7 +5,7 @@ import type { FC } from "react"
 import { useEffect, useState } from "react"
 
 import { useRegister } from "@/contexts/RegisterContext"
-import type { AvailableSections } from "@/types/AvailableSections"
+import type { AvailableSections } from "@/types/section/AvailableSections"
 import { subjectValidator, translateFromEng } from "@/utils/fixedSelection"
 import {
   documentValidator,

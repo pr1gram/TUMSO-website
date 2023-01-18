@@ -1,6 +1,6 @@
 import type { Dispatch } from "react"
 
-import type { AvailableSections } from "@/types/AvailableSections"
+import type { AvailableSections } from "@/types/section/AvailableSections"
 
 interface ValidationResult {
   student: boolean

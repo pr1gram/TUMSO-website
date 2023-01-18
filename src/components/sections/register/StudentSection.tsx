@@ -1,33 +1,24 @@
 import type { FC } from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { SchoolInputGroup } from "@/components/inputs/group/SchoolInputGroup"
 import { StudentInputGroup } from "@/components/inputs/group/StudentInputGroup"
 import { useRegister } from "@/contexts/RegisterContext"
-import { defaultStudentInputGroupData } from "@/types/StudentInputGroupData"
+import { useDataHandlerEffects } from "@/hooks/groups/studentSection/useDataHandlerEffects"
+import { defaultSchoolInputData } from "@/types/register/form/SchoolInputData"
+import { defaultStudentInputGroupData } from "@/types/register/form/StudentInputGroupData"
 
 export const StudentSection: FC<{}> = () => {
-  const [student1, setSTD1] = useState(defaultStudentInputGroupData)
-  const [student2, setSTD2] = useState(defaultStudentInputGroupData)
-  const [school, setSchool] = useState({ name: "", notListed: false })
+  // Contexts
   const { Storage, Updater } = useRegister()
 
-  useEffect(() => {
-    Storage.updateSection("students", {
-      1: student1,
-      2: student2
-    })
-  }, [student1, student2])
+  // States
+  const [student1, setSTD1] = useState(defaultStudentInputGroupData)
+  const [student2, setSTD2] = useState(defaultStudentInputGroupData)
+  const [school, setSchool] = useState(defaultSchoolInputData)
 
-  useEffect(() => {
-    Storage.updateSection("school", {
-      name: school.name
-        .trim()
-        .replace(/\r/g, "")
-        .replace(/\u200B/g, ""),
-      notListed: school.notListed
-    })
-  }, [school.name, school.notListed])
+  // Effects
+  useDataHandlerEffects(student1, student2, school, Storage)
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import type { DocumentData } from "@/types/DocumentData"
+import type { DocumentData } from "@/types/register/form/DocumentData"
 
 export const emptyStringValidator = (value: string) => {
   return value !== ""

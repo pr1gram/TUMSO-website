@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import { SelectionInput } from "@/components/inputs/SelectionInput"
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
-import type { StudentInputGroupData } from "@/types/StudentInputGroupData"
+import type { StudentInputGroupData } from "@/types/register/form/StudentInputGroupData"
 import {
   emailValidator,
   emptyStringValidator,

@@ -14,16 +14,14 @@ import hash from "object-hash"
 import { useState } from "react"
 
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
-import type { FormData } from "@/types/FormData"
-import type { StorableObject } from "@/types/StorableObject"
+import type { ResolvableStatus } from "@/types/callables/ResolvableStatus"
+import type { StoredDocument } from "@/types/firestore/StoredDocument"
+import type { SubmitStatus } from "@/types/firestore/SubmitStatus"
+import type { UseFirestoreType } from "@/types/firestore/UseFirestoreType"
+import type { FormData } from "@/types/register/form/FormData"
+import type { StorableObject } from "@/types/storage/StorableObject"
 
-type ResolvableStatus = "pending" | "failed" | "resolved"
-type StoredDocument = {
-  stored: StorableObject
-  checksum: string
-  timestamp: Timestamp
-}
-export const useFireStore = () => {
+export const useFireStore = (): UseFirestoreType => {
   const db = getFirestore()
   const storage = getStorage()
   const { user } = useFirebaseAuth()
@@ -138,16 +136,7 @@ export const useFireStore = () => {
     }
   }
 
-  const getSubmitStatus = async (): Promise<
-    | {
-        status: string
-        timestamp: Timestamp
-        id: string
-        reason?: string
-        ticketData: any
-      }
-    | undefined
-  > => {
+  const getSubmitStatus = async (): Promise<SubmitStatus | undefined> => {
     if (!user.uid) return undefined
     try {
       const docData = await getDoc(doc(collection(db, "submitted"), user.uid))

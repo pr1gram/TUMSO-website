@@ -1,26 +1,21 @@
-import type { Dispatch, FC, ReactNode } from "react"
+import type { FC, ReactNode } from "react"
 import { createContext, useContext, useState } from "react"
 
 import {
   defaultSectionHandler,
   useSectionHandler
 } from "@/contexts/SectionHandler"
-import type { FormData } from "@/types/FormData"
-import { defaultFormData } from "@/types/FormData"
-import type { SectionHandler } from "@/types/SectionHandler"
+import type { FormData } from "@/types/register/form/FormData"
+import { defaultFormData } from "@/types/register/form/FormData"
+import type { Updater } from "@/types/register/Updater"
+import type { SectionHandler } from "@/types/section/SectionHandler"
+import type { UpdateSection } from "@/types/section/UpdateSection"
+import type { FormStorage } from "@/types/storage/FormStorage"
 
 interface ContextInterface {
   section: SectionHandler
-  Storage: {
-    updateSection: UpdateSection
-    data: FormData
-    setStorage: Dispatch<FormData>
-    storageDep: number
-  }
-  Updater: {
-    setReceivedData: Dispatch<FormData | null>
-    receivedData: FormData | null
-  }
+  Storage: FormStorage
+  Updater: Updater
 }
 
 const defaultValue: ContextInterface = {
@@ -37,11 +32,6 @@ const defaultValue: ContextInterface = {
   }
 }
 const RegisterContext = createContext<ContextInterface>(defaultValue)
-
-type UpdateSection = (
-  section: "school" | "students" | "teacher" | "selection" | "document",
-  value: any
-) => void
 
 const useStorable = () => {
   const [storage, setStorage] = useState<FormData>(defaultFormData)

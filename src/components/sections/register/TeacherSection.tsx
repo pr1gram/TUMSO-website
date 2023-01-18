@@ -2,15 +2,19 @@ import { useEffect, useState } from "react"
 
 import { TeacherInputGroup } from "@/components/inputs/group/TeacherInputGroup"
 import { useRegister } from "@/contexts/RegisterContext"
-import type { TeacherInputGroupData } from "@/types/TeacherInputGroupData"
-import { defaultTeacherInputGroupData } from "@/types/TeacherInputGroupData"
+import type { TeacherInputGroupData } from "@/types/register/form/TeacherInputGroupData"
+import { defaultTeacherInputGroupData } from "@/types/register/form/TeacherInputGroupData"
 
 export const TeacherSection = () => {
+  // Contexts
+  const { Storage } = useRegister()
+
+  // States
   const [teacher, setTeacher] = useState<TeacherInputGroupData>(
     defaultTeacherInputGroupData
   )
-  const { Storage } = useRegister()
 
+  // Effects
   useEffect(() => {
     Storage.updateSection("teacher", teacher)
   }, [teacher])
