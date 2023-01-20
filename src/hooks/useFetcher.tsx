@@ -15,10 +15,13 @@ export const useFetcher = (
       fetcher()
       return
     }
+
     if (user.isLoggedIn()) {
       fetcher()
     } else if (notLoggedAction) {
-      notLoggedAction()
+      if (user.isLoggedIn() !== null) {
+        notLoggedAction()
+      }
     }
   }, [user])
 }

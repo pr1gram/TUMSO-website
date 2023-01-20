@@ -3,6 +3,7 @@ import "../styles/global.css"
 import { Antonio, Noto_Sans_Thai, Plus_Jakarta_Sans } from "@next/font/google"
 import type { AppProps } from "next/app"
 
+import { Footer } from "@/components/texts/static/Footer"
 import { FirebaseAuthProvider } from "@/contexts/firebaseAuth"
 
 const antonio = Antonio({ subsets: ["latin"] })
@@ -24,7 +25,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         }
       `}</style>
       <FirebaseAuthProvider>
-        <Component {...pageProps} />
+        <div className="min-h-screen">
+          <Component {...pageProps} />
+          <Footer />
+        </div>
       </FirebaseAuthProvider>
     </>
   )

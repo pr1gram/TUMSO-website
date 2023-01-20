@@ -147,11 +147,15 @@ export const useFireStore = (): UseFirestoreType => {
           id: docData.id,
           reason: docData.get("reason"),
           ticketData: {
+            subject: docData.get("data").selection.subject,
+            school: docData.get("data").school.name,
             fs: {
+              title: docData.get("data").students[1].title,
               firstname: docData.get("data").students[1].firstname,
               lastname: docData.get("data").students[1].lastname
             },
             ss: {
+              title: docData.get("data").students[2].title,
               firstname: docData.get("data").students[2].firstname,
               lastname: docData.get("data").students[2].lastname
             },
