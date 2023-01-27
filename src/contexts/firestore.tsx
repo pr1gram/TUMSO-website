@@ -162,7 +162,8 @@ export const useFireStore = (): UseFirestoreType => {
             teacher: {
               firstname: docData.get("data").teacher.firstname,
               lastname: docData.get("data").teacher.lastname
-            }
+            },
+            prize: docData.get("prize")
           }
         }
       }

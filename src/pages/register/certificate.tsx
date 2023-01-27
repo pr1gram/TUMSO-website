@@ -2,7 +2,7 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import fontKit from "@pdf-lib/fontkit"
 import Router from "next/router"
 import { PDFDocument, rgb } from "pdf-lib"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { BluringCurtain } from "@/components/wrapper/BluringCurtain"
@@ -28,11 +28,19 @@ const Page = () => {
     Router.push("/register")
   })
 
+  useEffect(() => {
+    if (submissionData?.status) {
+      if (submissionData?.status !== "accepted") {
+        Router.push("/register/status")
+      }
+    }
+  }, [submissionData])
+
   async function generateCert(
     nameStr: string,
     schoolStr: string,
     subject: string,
-    variant: number
+    variant: string
   ) {
     const COLOR_BLUE = rgb(43 / 256, 78 / 256, 118 / 256)
     const COLOR_BLACK = rgb(0, 0, 0)
@@ -45,7 +53,7 @@ const Page = () => {
     const font = await loadFileUrl(
       "http://localhost:3000/templates/NotoSansThai-SemiBold.ttf"
     )
-    const notoSansFont = await pdfDoc.embedFont(font)
+    const notoSansFont = await pdfDoc.embedFont(font, { subset: true })
 
     const pages = pdfDoc.getPages()
     const firstPage = pages[0]
@@ -61,19 +69,17 @@ const Page = () => {
     const school = create(schoolStr)
     let prize
     switch (variant) {
-      case 1:
+      case "1":
         prize = "ได้รับรางวัลชนะเลิศ"
         break
-      case 2:
+      case "2":
         prize = "ได้รับรางวัลรองชนะเลิศ"
         break
-      case 3:
+      case "3":
         prize = "ได้รับรางวัลรองชนะเลิศลำดับที่ 2"
         break
-      case 4:
-        prize = "ได้รับรางวัลชมเชย"
-        break
       default:
+        prize = "ได้รับรางวัลชมเชย"
     }
     const description = create(`${prize} สาขา${translateFromEng(subject)}`)
 
@@ -113,7 +119,7 @@ const Page = () => {
                   `${submissionData?.ticketData.fs.title}${submissionData?.ticketData.fs.firstname} ${submissionData?.ticketData.fs.lastname}`,
                   submissionData?.ticketData.school,
                   submissionData?.ticketData.subject,
-                  1
+                  submissionData?.ticketData.prize
                 )
               }}
             >
@@ -137,7 +143,7 @@ const Page = () => {
                   `${submissionData?.ticketData.ss.title}${submissionData?.ticketData.ss.firstname} ${submissionData?.ticketData.ss.lastname}`,
                   submissionData?.ticketData.school,
                   submissionData?.ticketData.subject,
-                  1
+                  submissionData?.ticketData.prize
                 )
               }}
             >
