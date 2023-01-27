@@ -45,7 +45,7 @@ const Page = () => {
     const COLOR_BLUE = rgb(43 / 256, 78 / 256, 118 / 256)
     const COLOR_BLACK = rgb(0, 0, 0)
     const template = await loadFileUrl(
-      "https://tumso.triam.cc/templates/cert-template.pdf"
+      "https://tumso.triam.cc/templates/cert-template-latest.pdf"
     )
     const pdfDoc = await PDFDocument.load(template)
 
