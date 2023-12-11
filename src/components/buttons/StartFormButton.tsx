@@ -3,16 +3,17 @@ import type { Dispatch, FC } from "react"
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useRegister } from "@/contexts/RegisterContext"
-import { isClosed } from "@/utils/timer"
+import { useTimer } from "@/hooks/useTimer"
 
 export const StartFormButton: FC<{
   byPass: boolean | undefined
   setShowLogin: Dispatch<boolean>
 }> = ({ byPass, setShowLogin }) => {
   const { user, signOut } = useFirebaseAuth()
+  const { isClosed } = useTimer()
   const { section } = useRegister()
 
-  return user.isLoggedIn() ? (
+  return user.isLoggedIn() && isClosed(false) ? (
     <div className="flex flex-col items-center">
       <p className="mb-2 max-w-[400px] text-center text-sm text-red-400">
         ขณะนี้ระบบได้ปิดรับผู้สมัครแล้ว

@@ -5,7 +5,9 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 import { RevealText } from "@/components/texts/animated/reveal"
+import { useTimer } from "@/hooks/useTimer"
 import { useWindowDimensions } from "@/utils/dimension"
+import { MONTH, nth, THMONTH } from "@/utils/timer"
 
 const Page = () => {
   const { scrollY } = useScroll()
@@ -13,6 +15,8 @@ const Page = () => {
 
   const { height } = useWindowDimensions()
   const [docHeight, setDocHeight] = useState(0)
+
+  const { open, round } = useTimer()
 
   useEffect(() => {
     scrollY.onChange((d) => {
@@ -40,7 +44,8 @@ const Page = () => {
           transition={{ type: "tween", delay: 0.4, duration: 0.6 }}
           className="pt-1 text-gray-600"
         >
-          Registration starts 30th December 2022
+          Registration starts {open.getDate()}
+          {nth(open.getDate())} {MONTH[open.getMonth()]} {open.getFullYear()}
         </RevealText>
         <motion.div
           initial={{ opacity: 0 }}
@@ -100,8 +105,8 @@ const Page = () => {
               </h1>
               <p className="mt-2 max-w-lg break-all text-center text-gray-200">
                 TUMSO คือ
-                การแข่งขันคณิตศาสตร์และวิทยาศาสตร์ระหว่างโรงเรียนครั้งที่ 19
-                จัดขึ้นโดยโรงเรียนเตรียมอุมดมศึกษา
+                การแข่งขันคณิตศาสตร์และวิทยาศาสตร์ระหว่างโรงเรียนครั้งที่{" "}
+                {round} จัดขึ้นโดยโรงเรียนเตรียมอุมดมศึกษา
                 เป็นการแข่งขันในรายวิชาคณิตศาสตร์ฟิสิกส์เคมี ชีววิทยา
                 และคอมพิวเตอร์ โดยแข่งขันในลักษณะทีม ทีมละไม่เกิน 2 คน
                 เข้าแข่งขันแยกกันในแต่ละรายวิชา{" "}
@@ -278,7 +283,8 @@ const Page = () => {
                 </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
-                เริ่มวันที่ 30 ธันวาคม 2565
+                เริ่มวันที่ {open.getDate()} {THMONTH[open.getMonth()]}{" "}
+                {open.getFullYear()}
               </p>
             </motion.div>
           </div>
@@ -306,7 +312,8 @@ const Page = () => {
                 </Link>
               </div>
               <p className="mt-2 text-center text-xs text-gray-400">
-                เริ่มวันที่ 30 ธันวาคม 2565
+                เริ่มวันที่ {open.getDate()} {THMONTH[open.getMonth()]}{" "}
+                {open.getFullYear()}
               </p>
             </motion.div>
             <motion.div

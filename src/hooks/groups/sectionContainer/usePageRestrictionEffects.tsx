@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { useFirebaseAuth } from "@/contexts/firebaseAuth"
 import { useRegister } from "@/contexts/RegisterContext"
-import { isClosed } from "@/utils/timer"
+import { useTimer } from "@/hooks/useTimer"
 
 export const usePageRestrictionEffects = (
   query: any,
@@ -10,6 +10,7 @@ export const usePageRestrictionEffects = (
 ) => {
   const { user } = useFirebaseAuth()
   const { section } = useRegister()
+  const { isClosed } = useTimer()
   useEffect(() => {
     if (!user.isLoggedIn()) {
       section.set("landing")

@@ -82,6 +82,7 @@ export const FirebaseAuthProvider: FC<{ children: any }> = ({ children }) => {
     appId: "1:183078975975:web:d1c7436fa6fc91f1d2e542"
   }
   initializeApp(firebaseConfig)
+
   return (
     <FirebaseAuthContext.Provider value={useFBAuthAction()}>
       {children}
