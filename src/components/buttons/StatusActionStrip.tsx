@@ -4,6 +4,7 @@ import type { Dispatch, FC } from "react"
 
 import { DownloadCert } from "@/components/texts/static/group/DownloadCert"
 import { useFireStore } from "@/contexts/firestore"
+import { useTimer } from "@/hooks/useTimer"
 import type { SubmitStatus } from "@/types/firestore/SubmitStatus"
 
 export const StatusActionStrip: FC<{
@@ -11,12 +12,14 @@ export const StatusActionStrip: FC<{
   setImgLoading: Dispatch<boolean>
 }> = ({ submissionData, setImgLoading }) => {
   const { enableEditing } = useFireStore()
+  const { isClosed } = useTimer()
 
   const edit = async () => {
     await enableEditing()
     Router.push("/register?filling")
   }
 
+  // eslint-disable-next-line no-nested-ternary
   return submissionData?.status === "rejected" &&
     submissionData?.reason !== "duplicated" ? (
     <h1
@@ -26,11 +29,9 @@ export const StatusActionStrip: FC<{
       <PencilIcon className="h-4 w-4" />
       <span>แก้ไขแบบฟอร์ม</span>
     </h1>
-  ) : (
-    // <DownloadTicket
-    //   submissionData={submissionData}
-    //   setImgLoading={setImgLoading}
-    // />
+  ) : isClosed(false) ? (
     <DownloadCert />
+  ) : (
+    <></>
   )
 }
