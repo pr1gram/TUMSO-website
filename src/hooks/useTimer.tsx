@@ -7,7 +7,7 @@ export const useTimer = () => {
   const [round, setRound] = useState(0)
 
   useEffect(() => {
-    if (!localStorage.getItem("CLOSE_T")) {
+    if (true) {
       const getTimer = async () => {
         const timerRef = collection(getFirestore(), "configs")
         const docData = await getDoc(doc(timerRef, "timers"))
