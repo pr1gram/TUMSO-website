@@ -122,32 +122,42 @@ const Page = () => {
                 สาขาที่เปิดรับสมัคร
               </h1>
               <div className="mt-6 flex max-w-[800px] flex-wrap items-center justify-center">
-                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                <div className="mr-2 mb-4 flex w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
                   <div className="px-4">
                     <h1 className="text-lg font-semibold">Physics</h1>
-                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-200">
-                      เนื้อหาที่ใช้สอบ : 1.
-                      เนื้อหารายวิชาฟิสิกส์ครอบคลุมหลักสูตรแกนกลางการศึกษาขั้นพื้นฐานพุทธศักราช2551
-                      2.
-                      พื้นฐานความรู้รายวิชาคณิตศาสตร์เช่นการแก้สมการฟังก์ชันตรีโกณมิติฟังก์ชันเอกซ์โพเนนเชียล
-                      และลอการิทึม แคลคูลัสเบื้องต้น
-                    </p>
+                    <div className="flex h-[42px] items-center">
+                      <Link
+                        target={`_blank`}
+                        href={`/documents/ระเบียบการแข่งขัน TUMSO 20th final.pdf`}
+                        className="w-full rounded-lg bg-white px-6 py-1.5 text-center text-sm text-gray-900"
+                      >
+                        ดาวน์โหลดรายละเอียด
+                      </Link>
+                    </div>
                   </div>
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">2 ชั่วโมง</span>
+                      <span className="mt-0.5">1 ชั่วโมงครึ่ง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 11.00</span>
+                      <span className="mt-0.5">12th Jan 08.30 - 10.00</span>
                     </div>
                   </div>
                 </div>
-                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+
+                <div className="relative mr-2 mb-4 flex max-w-[318px] cursor-not-allowed flex-col justify-center rounded-md border border-white pt-2 text-gray-500">
+                  <h1 className="absolute z-10 w-full text-center text-white">
+                    ยกเลิกการจัดสอบในรายวิชานี้
+                  </h1>
+                  <div
+                    style={{ backdropFilter: "blur(2px)" }}
+                    className="absolute h-full w-full"
+                  />
                   <div className="px-4">
                     <h1 className="text-lg font-semibold">Mathematics</h1>
-                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-200">
+                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-500">
                       เนื้อหาที่ใช้สอบ :
                       เนื้อหารายวิชาคณิตศาสตร์ครอบคลุมหลักสูตรแกนกลางการศึกษาขั้นพื้นฐาน
                       พุทธศักราช 2551
@@ -156,93 +166,86 @@ const Page = () => {
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">2 ชั่วโมง</span>
+                      <span className="mt-0.5">- ชั่วโมง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 11.00</span>
+                      <span className="mt-0.5">--rd Jan 08.30 - 10.00</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                <div className="mr-2 mb-4 flex w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
                   <div className="px-4">
                     <h1 className="text-lg font-semibold">Chemistry</h1>
-                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-200">
-                      เนื้อหาที่ใช้สอบ : 1.
-                      เนื้อหารายวิชาเคมีครอบคลุมหลักสูตรแกนกลางการศึกษาขั้นพื้นฐานพุทธศักราช2551
-                      2. พื้นฐานความรู้รายวิชาคณิตศาสตร์เช่นการแก้สมการเบื้องตน้
-                      ตรีโกณมิติแคลคูลัสพื้นฐานการหาอนุพันธ์และ
-                      ปริพันธ์เบื้องตน้
-                      รวมถึงทักษะการแก้ปัญหาทางเคมีโดยวิธีการทางคณิตศาสตร์ 3.
-                      ความรู้รอบตัวและเหตุการณป์ ัจจุบนั ที่เกี่ยวกับวิชาเคมี
-                    </p>
+                    <div className="flex h-[42px] items-center">
+                      <Link
+                        target={`_blank`}
+                        href={`/documents/ระเบียบการแข่งขัน TUMSO 20th final.pdf`}
+                        className="w-full rounded-lg bg-white px-6 py-1.5 text-center text-sm text-gray-900"
+                      >
+                        ดาวน์โหลดรายละเอียด
+                      </Link>
+                    </div>
                   </div>
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">2 ชั่วโมง</span>
+                      <span className="mt-0.5">1 ชั่วโมงครึ่ง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 11.00</span>
+                      <span className="mt-0.5">12th Jan 08.30 - 10.00</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                <div className="mr-2 mb-4 flex w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
                   <div className="px-4">
                     <h1 className="text-lg font-semibold">Biology</h1>
-                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-200">
-                      เนื้อหาที่ใช้สอบ : 1.
-                      เนื้อหารายวิชาชีววิทยาครอบคลุมหลักสูตรแกนกลางการศึกษาขั้นพื้นฐานพุทธศักราช2551
-                      2. เนื้อหาตามตําราวิทยาศาสตร์และคณิตศาสตร์มูลนิธิสอวน. 3.
-                      เนื้อหารายวิชาชีววิทยาเพิ่มเติมนอกเหนือจากหลักสูตรซึ่งปรากฏในตําราชีววิทยาทั่วไปครอบคลุมเนื้อหาในหัวข้อ
-                      Cell Biology, Plant Anatomy and Physiology, Animal Anatomy
-                      and Physiology, Genetics and Evolution, Ethology, Ecology
-                      และ Biosystematics 4.
-                      เนื้อหารายวิชาเคมีครอบคลุมหลักสูตรแกนกลางการศึกษาขั้นพื้นฐานพุทธศักราช2551ที่เกี่ยวข้องกับชีววิทยา
-                      5.
-                      ทักษะปฏิบัติการพื้นฐานทางวิทยาศาสตร์รวมถึงการใช้อุปกรณ์และเครื่องมือพื้นฐานทางชีววิทยา
-                      6.
-                      ทักษะการแก้ปัญหาทางชีววิทยาและการวิเคราะห์ผลการทดลอง(ProblemSolving)
-                    </p>
+                    <div className="flex h-[42px] items-center">
+                      <Link
+                        target={`_blank`}
+                        href={`/documents/ระเบียบการแข่งขัน TUMSO 20th final.pdf`}
+                        className="w-full rounded-lg bg-white px-6 py-1.5 text-center text-sm text-gray-900"
+                      >
+                        ดาวน์โหลดรายละเอียด
+                      </Link>
+                    </div>
                   </div>
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">2 ชั่วโมง</span>
+                      <span className="mt-0.5">1 ชั่วโมงครึ่ง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 11.00</span>
+                      <span className="mt-0.5">12th Jan 08.30 - 10.00</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mr-2 mb-4 flex max-w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
+                <div className="mr-2 mb-4 flex w-[318px] flex-col justify-center rounded-md border border-white pt-2 text-white">
                   <div className="px-4">
                     <h1 className="text-lg font-semibold">Computer</h1>
-                    <p className="max-h-[42px] overflow-hidden break-all text-sm text-gray-200">
-                      เนื้อหาที่ใช้สอบ : 1.
-                      พื้นฐานความรู้เกี่ยวกับการเขียนโปรแกรม 2. ความรู้เกี่ยวกบั
-                      อัลกอริทึม ได้แก่
-                      การคํานวณความซับซ้อนของวิธีการทางคอมพิวเตอร์
-                      การออกแบบอัลกอริทึม (เช่น การค้นหาแบบทวิภาค
-                      กําหนดการเชิงพลวัต) และการออกแบบโครงสร้างข้อมูล (เช่น
-                      ต้นไม้เฟนวิก) 3.
-                      ความรู้เกี่ยวกับคอมบินาทอริกเช่นทฤษฎีกราฟและการนับ 4.
-                      ความรเู้ กี่ยวกบั ทฤษฎีจํานวน
-                    </p>
+                    <div className="flex h-[42px] items-center">
+                      <Link
+                        target={`_blank`}
+                        href={`/documents/ระเบียบการแข่งขัน TUMSO 20th final.pdf`}
+                        className="w-full rounded-lg bg-white px-6 py-1.5 text-center text-sm text-gray-900"
+                      >
+                        ดาวน์โหลดรายละเอียด
+                      </Link>
+                    </div>
                   </div>
                   <div className="mt-2 flex">
                     <div className="-mb-[1px] -ml-[1px] flex shrink-0 items-center space-x-1 rounded-bl-[7px] border border-white px-2 text-sm">
                       <ClockIcon className="h-4 w-4" />
-                      <span className="mt-0.5">3 ชั่วโมง</span>
+                      <span className="mt-0.5">1 ชั่วโมงครึ่ง</span>
                     </div>
                     <div className="-mb-[1px] -mr-[1px] flex w-full items-center justify-center space-x-1 rounded-br-[7px] border border-white text-sm">
                       <CalendarIcon className="h-4 w-4" />
-                      <span className="mt-0.5">13rd Jan 09.00 - 12.00</span>
+                      <span className="mt-0.5">12th Jan 08.30 - 10.00</span>
                     </div>
                   </div>
                 </div>

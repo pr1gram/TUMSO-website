@@ -44,7 +44,7 @@ export const useTimer = () => {
     if (byPass === true) {
       return false
     }
-    return new Date().getTime() >= CTIME
+    return new Date().getTime() >= CTIME || new Date().getTime() <= OTIME
   }
 
   const isStarted = () => {
