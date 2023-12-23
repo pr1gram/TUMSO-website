@@ -205,7 +205,8 @@ const Page = () => {
     if (
       user.uid !== undefined &&
       user.uid !== "Di08jZL2aTOt31AUjX34FGZyIjv1" &&
-      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3"
+      user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3" &&
+      user.uid !== "eMvEAdtlmCS3wHMZ2TjcctdLiCu2"
     ) {
       Router.push("/register")
     }
