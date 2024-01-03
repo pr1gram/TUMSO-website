@@ -5,7 +5,6 @@ import Router from "next/router"
 import hash from "object-hash"
 import type { FC } from "react"
 import { useEffect, useState } from "react"
-
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
 import { ShortTextInput } from "@/components/inputs/ShortTextInput"
 import { DocumentSection } from "@/components/sections/register/DocumentSection"
