@@ -78,7 +78,6 @@ export const SectionContainer: FC<{ id: string | undefined }> = ({ id }) => {
       user.uid !== "y8zkDnTgDddHLxGbzOKyFYEIs5H3" &&
       user.uid !== "eMvEAdtlmCS3wHMZ2TjcctdLiCu2"
     ) {
-    ) {
       Router.push("/register")
     }
   }, [user.uid])
