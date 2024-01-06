@@ -23,7 +23,7 @@ export const StatusActionStrip: FC<{
   return submissionData?.status === "rejected" &&
     submissionData?.reason !== "duplicated" ? (
     <h1
-      onClick={() => {}}
+      onClick={edit}
       className="flex cursor-not-allowed items-center justify-center space-x-1 text-center text-gray-600"
     >
       <PencilIcon className="h-4 w-4" />
