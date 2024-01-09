@@ -11,7 +11,7 @@ export const useTimer = () => {
       const getTimer = async () => {
         const timerRef = collection(getFirestore(), "configs")
         const docData = await getDoc(doc(timerRef, "timers"))
-        const a = docData.get("REG_CLOSE_TIMESTAMP").toMillis()
+        const a = 1704794400000
         const b = docData.get("REG_OPEN_TIMESTAMP").toMillis()
         const r = docData.get("COMP_ROUND")
         setCT(a)
@@ -19,8 +19,7 @@ export const useTimer = () => {
         setRound(r)
 
         localStorage.setItem(
-          "CLOSE_T",
-          docData.get("REG_CLOSE_TIMESTAMP").toMillis()
+          "CLOSE_T",1704794400000
         )
 
         localStorage.setItem(
