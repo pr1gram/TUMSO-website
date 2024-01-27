@@ -1,7 +1,7 @@
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import fontKit from "@pdf-lib/fontkit"
 import Router from "next/router"
-import { PDFDocument, rgb } from "pdf-lib"
+import { degrees, PDFDocument, rgb } from "pdf-lib"
 import { useEffect, useState } from "react"
 
 import { IlluminateButton } from "@/components/buttons/animated/illuminated"
@@ -15,6 +15,7 @@ import { translateFromEng } from "@/utils/fixedSelection"
 import { downloadBlob, loadFileUrl, textObjectFactory } from "@/utils/pdf"
 
 const Page = () => {
+  const BASE_URL = new URL("https://tumso.triamudom.ac.th/templates/")
   const { getSubmitStatus } = useFireStore()
   const [submissionData, setSD] = useState<SubmitStatus | null>(null)
 
@@ -40,18 +41,19 @@ const Page = () => {
     nameStr: string,
     schoolStr: string,
     subject: string,
-    variant: string
+    variant: string,
+    id: string
   ) {
     const COLOR_BLUE = rgb(43 / 256, 78 / 256, 118 / 256)
     const COLOR_BLACK = rgb(0, 0, 0)
     const template = await loadFileUrl(
-      "https://tumso.triam.cc/templates/cert-template-latest.pdf"
+      new URL("cert-temp-2024.pdf", BASE_URL).toString()
     )
     const pdfDoc = await PDFDocument.load(template)
 
     await pdfDoc.registerFontkit(fontKit)
     const font = await loadFileUrl(
-      "https://tumso.triam.cc/templates/NotoSansThai-SemiBold.ttf"
+      new URL("THSarabunNew Bold.ttf", BASE_URL).toString()
     )
     const notoSansFont = await pdfDoc.embedFont(font, { subset: true })
 
@@ -62,7 +64,7 @@ const Page = () => {
     const { create, drawCenteredText } = textObjectFactory(
       notoSansFont,
       firstPage,
-      14
+      23
     )
 
     const name = create(nameStr)
@@ -73,23 +75,34 @@ const Page = () => {
         prize = "ได้รับรางวัลชนะเลิศ"
         break
       case "2":
-        prize = "ได้รับรางวัลรองชนะเลิศ"
+        prize = "ได้รับรางวัลรองชนะเลิศลำดับที่ 1"
         break
       case "3":
         prize = "ได้รับรางวัลรองชนะเลิศลำดับที่ 2"
         break
+      case "4":
+        prize = "ได้เข้ารอบ 10 ทีมสุดท้าย"
+        break
       default:
-        prize = "ได้รับรางวัลชมเชย"
+        prize = "ได้เข้าร่วมแข่งขัน"
     }
     const description = create(`${prize} สาขา${translateFromEng(subject)}`)
 
-    drawCenteredText(name, 234, COLOR_BLUE)
-    drawCenteredText(school, 256, COLOR_BLUE)
+    drawCenteredText(name, 234 - 14, COLOR_BLUE)
+    drawCenteredText(school, 256 - 14, COLOR_BLUE)
 
-    drawCenteredText(description, 310, COLOR_BLACK)
+    drawCenteredText(description, 287, COLOR_BLACK)
+
+    firstPage.drawText(id, {
+      x: 10,
+      y: 5,
+      size: 5,
+      color: rgb(254 / 256, 254 / 256, 252 / 256),
+      rotate: degrees(0)
+    })
 
     const pdfBytes = await pdfDoc.save()
-    downloadBlob(pdfBytes, "test.pdf", "application/pdf")
+    downloadBlob(pdfBytes, `เกียรติบัตร${nameStr}.pdf`, "application/pdf")
   }
 
   return (
@@ -119,7 +132,8 @@ const Page = () => {
                   `${submissionData?.ticketData.fs.title}${submissionData?.ticketData.fs.firstname} ${submissionData?.ticketData.fs.lastname}`,
                   submissionData?.ticketData.school,
                   submissionData?.ticketData.subject,
-                  submissionData?.ticketData.prize
+                  submissionData?.ticketData.prize,
+                  submissionData?.id || ""
                 )
               }}
             >
@@ -138,12 +152,14 @@ const Page = () => {
               {submissionData?.ticketData.ss.lastname}
             </h1>
             <IlluminateButton
+              disabled={submissionData?.id === "ZXDo2WclrCcCZX89QjwlTQFexwk1"}
               action={() => {
                 generateCert(
                   `${submissionData?.ticketData.ss.title}${submissionData?.ticketData.ss.firstname} ${submissionData?.ticketData.ss.lastname}`,
                   submissionData?.ticketData.school,
                   submissionData?.ticketData.subject,
-                  submissionData?.ticketData.prize
+                  submissionData?.ticketData.prize,
+                  submissionData?.id || ""
                 )
               }}
             >

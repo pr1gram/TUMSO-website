@@ -19,7 +19,10 @@ export const IlluminateButton: FC<{
       onMouseLeave={() => {
         setHover(false)
       }}
-      onClick={action}
+      onClick={() => {
+        if (disabled) return
+        action()
+      }}
       style={{ width: `${width}px` }}
       className={classnames(
         "relative flex h-[34px] items-center justify-center rounded-md border border-gray-400 font-medium text-gray-600",

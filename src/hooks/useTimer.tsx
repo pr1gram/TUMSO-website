@@ -18,9 +18,7 @@ export const useTimer = () => {
         setOT(b)
         setRound(r)
 
-        localStorage.setItem(
-          "CLOSE_T","1704794400000"
-        )
+        localStorage.setItem("CLOSE_T", "1704794400000")
 
         localStorage.setItem(
           "OPEN_T",
