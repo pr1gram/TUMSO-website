@@ -12,9 +12,10 @@ import {
   updateDoc,
   where
 } from "@firebase/firestore"
+import { app } from "@/contexts/firebaseAuth"
 
 export const useAdminControl = () => {
-  const db = getFirestore()
+  const db = getFirestore(app!)
   const submittedCol = collection(db, "submitted")
 
   const getAdditional = async (

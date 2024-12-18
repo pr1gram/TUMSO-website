@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# idx
+/.idx
+
 # cypress
 cypress/screenshots
 cypress/videos

@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, getFirestore } from "@firebase/firestore"
 import { useEffect, useState } from "react"
+import { app } from "@/contexts/firebaseAuth"
 
 export const useTimer = () => {
   const [CTIME, setCT] = useState(0)
@@ -9,7 +10,7 @@ export const useTimer = () => {
   useEffect(() => {
     if (true) {
       const getTimer = async () => {
-        const timerRef = collection(getFirestore(), "configs")
+        const timerRef = collection(getFirestore(app!), "configs")
         const docData = await getDoc(doc(timerRef, "timers"))
         const a = 1704794400000
         const b = docData.get("REG_OPEN_TIMESTAMP").toMillis()

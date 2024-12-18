@@ -13,7 +13,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "@firebase/storage"
 import hash from "object-hash"
 import { useState } from "react"
 
-import { useFirebaseAuth } from "@/contexts/firebaseAuth"
+import { useFirebaseAuth, app } from "@/contexts/firebaseAuth"
 import type { ResolvableStatus } from "@/types/callables/ResolvableStatus"
 import type { StoredDocument } from "@/types/firestore/StoredDocument"
 import type { SubmitStatus } from "@/types/firestore/SubmitStatus"
@@ -22,8 +22,8 @@ import type { FormData } from "@/types/register/form/FormData"
 import type { StorableObject } from "@/types/storage/StorableObject"
 
 export const useFireStore = (): UseFirestoreType => {
-  const db = getFirestore()
-  const storage = getStorage()
+  const db = getFirestore(app!)
+  const storage = getStorage(app!)
   const { user } = useFirebaseAuth()
   const saveFormsCollRef = collection(db, "savedForms")
   const [saveStorableStatus, setSSS] = useState<ResolvableStatus>("resolved")
